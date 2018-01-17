@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.util.function.Function;
 
 public class ConnectionDBImpl implements ConnectionDB {
-    private static final ConnectionDBImpl INSTANCE = new ConnectionDBImpl();
+    private static final ConnectionDB INSTANCE = new ConnectionDBImpl();
     private static final Integer PORT = 5432;
     private static final String DB = "taskdairy";
     private static final String CONNECTION_URL = "jdbc:postgresql://localhost:%d/%s";
@@ -17,7 +17,7 @@ public class ConnectionDBImpl implements ConnectionDB {
     private ConnectionDBImpl() {
     }
 
-    public static ConnectionDBImpl getInstance(){
+    public static ConnectionDB getInstance(){
         return INSTANCE;
     }
 
