@@ -1,5 +1,5 @@
 import org.junit.jupiter.api.Disabled;
-import connection.ConnectionDB;
+import connection.*;
 import org.junit.jupiter.api.Test;
 
 import java.sql.ResultSet;
@@ -9,12 +9,16 @@ import java.sql.Timestamp;
 
 class ConnectionDBTest {
 
+    @Test
+    void connectionTest(){
+
+    }
 
     @Test
     @Disabled("the test does not correspond to the canons")
     void createTable() {
 
-        ConnectionDB connectionDB = ConnectionDB.getInstance();
+        ConnectionDB connectionDB = ConnectionDBImpl.getInstance();
         connectionDB.getFromDB((connection -> {
             try {
                 Statement statement = connection.createStatement();
@@ -26,7 +30,6 @@ class ConnectionDBTest {
                     System.out.println(set.getLong("date_add"));
                     Timestamp timestamp = Timestamp.valueOf(set.getString("date_add"));
                     System.out.println(timestamp);
-//                    System.out.println(set.getLong("dead_line"));
                     System.out.println(set.getInt("user_id"));
                 }
 

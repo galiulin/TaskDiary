@@ -1,6 +1,6 @@
 package dao;
 
-import connection.ConnectionDB;
+import connection.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import pojo.Task;
@@ -8,15 +8,13 @@ import pojo.Task;
 import java.sql.SQLException;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class TaskDAOImplTest {
 
     private TaskDAOImpl taskDAO;
 
     @BeforeEach
     void setUp() {
-        taskDAO = new TaskDAOImpl(ConnectionDB.getInstance());
+        taskDAO = new TaskDAOImpl(ConnectionDBImpl.getInstance());
     }
 
     @Test

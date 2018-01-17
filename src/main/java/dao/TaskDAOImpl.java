@@ -1,6 +1,6 @@
 package dao;
 
-import connection.ConnectionDB;
+import connection.*;
 import pojo.Condition;
 import pojo.Task;
 
