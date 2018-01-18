@@ -3,16 +3,17 @@ import org.junit.jupiter.api.*;
 import pojo.Condition;
 import pojo.Role;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
+import java.lang.reflect.*;
 import java.sql.*;
+import java.util.Arrays;
 import java.util.function.Function;
 
 class ConnectionDBTest {
     private static ConnectionDB oldConnectionDB;
+    private static ConnectionDB newConnectionDBProxy;
     private static ConnectionDB newConnectionDB;
 
-    @Test
+    //    @Test
     public void setup() throws NoSuchFieldException, SQLException {
         if (oldConnectionDB == null) {
             oldConnectionDB = ConnectionDBImpl.getInstance();
@@ -23,11 +24,14 @@ class ConnectionDBTest {
             public Connection getConnect() {
                 Connection connection = null;
                 try {
+                    Class.forName("org.h2.Driver");
                     connection = DriverManager.getConnection(
-                            "jdbc:postgresql://localhost:5432/testdbtaskdairy",
-                            "admin",
-                            "admin");
+                            "jdbc:h2:~/test_db/test_db;MODE=PostgreSQL",
+                            "sa",
+                            "");
                 } catch (SQLException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException e) {
                     e.printStackTrace();
                 }
                 return connection;
@@ -38,10 +42,17 @@ class ConnectionDBTest {
                 return function.apply(getConnect());
             }
         };
-        replaceConnectionDB(oldConnectionDB, newConnectionDB);
-        createDB();
+        newConnectionDBProxy = (ConnectionDB) Proxy.newProxyInstance(
+                oldConnectionDB.getClass().getClassLoader(),
+                oldConnectionDB.getClass().getInterfaces(),
+                (proxy, method, args) -> {
+//                    Arrays.stream(Thread.currentThread().getStackTrace()).forEach(System.out::println);
+                    return method.invoke(newConnectionDB, args);
+                });
 
-        shutdown();
+        replaceConnectionDB(oldConnectionDB, newConnectionDBProxy);
+
+        createDB();
     }
 
     private void replaceConnectionDB(ConnectionDB oldConnectionDB, ConnectionDB newConnectionDB) throws NoSuchFieldException {
@@ -238,7 +249,7 @@ class ConnectionDBTest {
     }
 
     /**
-     * выключаем, дропаем все таблицы и восстанавливаем исходный объект
+     * выключаем: дропаем все таблицы и восстанавливаем исходный объект
      */
     public void shutdown() {
         ConnectionDB connectionDB = ConnectionDBImpl.getInstance();
@@ -251,6 +262,7 @@ class ConnectionDBTest {
             dropTableRole(statement);
             dropTableCondition(statement);
             replaceConnectionDB(oldConnectionDB, oldConnectionDB);
+            newConnectionDBProxy = null;
             newConnectionDB = null;
         } catch (SQLException ex) {
             ex.printStackTrace();
