@@ -1,8 +1,14 @@
 package pojo;
 
 
+import javax.xml.bind.annotation.*;
 import java.util.Objects;
 
+//Определяем корневой элемент
+@XmlRootElement(name="Name")
+
+//Определяем последовательность тегов в XML
+@XmlType(propOrder = {"id","login","firstName","lastName","role"})
 public class User {
 
     private int id;
@@ -11,6 +17,10 @@ public class User {
     private String lastName;
     private String password;
     private Role role;
+
+    public User(){
+
+    }
 
     public User(int id, String login, String firstName, String lastName, String password, Role role) {
         this.id = id;
@@ -29,6 +39,8 @@ public class User {
         this.role = role;
     }
 
+    //Указываем, что id должен быть атрибутом
+    @XmlAttribute
     public int getId() {
         return id;
     }
@@ -55,7 +67,8 @@ public class User {
         this.firstName = firstName;
     }
 
-
+    //указываем что поле lastName должно быть указано как last_name
+    @XmlElement(name = "last_name")
     public String getLastName() {
         return lastName;
     }
@@ -65,6 +78,8 @@ public class User {
     }
 
 
+    //Указываем что мы не хотим сохранять поле в xml
+    @XmlTransient
     public String getPassword() {
         return password;
     }
