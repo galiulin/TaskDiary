@@ -8,7 +8,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserDAOImpl {
+public class UserDAOImpl implements UserDAO {
 
     private ConnectionDB conDB;
 
@@ -16,6 +16,10 @@ public class UserDAOImpl {
         this.conDB = connectionDB;
     }
 
+    /**
+     * получение пользователя по логину
+     */
+    @Override
     public User getUserByLogin(String login) throws SQLException {
         User result = null;
         Connection connection = conDB.getConnect();
@@ -29,17 +33,20 @@ public class UserDAOImpl {
         return result;
     }
 
+    /***/
+    @Override
     public List<User> getAllUsers() throws SQLException {
         List<User> result = new ArrayList<>();
         Connection connection = conDB.getConnect();
         PreparedStatement statement = connection.prepareStatement("SELECT * FROM user_t");
         ResultSet set = statement.executeQuery();
-        while(set.next()){
+        while (set.next()) {
             result.add(constructingUserFromField(set));
         }
         return result;
     }
 
+    @Override
     public int insertNewUser(User user) throws SQLException {
         Connection connection = conDB.getConnect();
         PreparedStatement statement = connection.prepareStatement(
@@ -52,13 +59,16 @@ public class UserDAOImpl {
         statement.setString(5, user.getRole().name());
         int result = -1;
         ResultSet set = statement.executeQuery();
-        while (set.next()){
+        while (set.next()) {
             result = set.getInt("id");
         }
         user.setId(result);
         return result;
     }
 
+    /**
+     * метод не для публичного доступа
+     */
     private void deleteUser(User user) throws SQLException {
         Connection connection = conDB.getConnect();
         PreparedStatement statement = connection.prepareStatement(
@@ -66,10 +76,11 @@ public class UserDAOImpl {
         );
     }
 
+    @Override
     public void updateUserFields(User user) throws SQLException {
         Connection connection = conDB.getConnect();
         PreparedStatement statement = connection.prepareStatement(
-                "UPDATE user_t SET first_name = ?, last_name = ?, WHERE login = ?"
+                "UPDATE user_t SET first_name = ?, last_name = ? WHERE login = ?"
         );
         statement.setString(3, user.getLogin());
         statement.setString(1, user.getFirstName());
@@ -77,6 +88,7 @@ public class UserDAOImpl {
         statement.executeUpdate();
     }
 
+    @Override
     public void updateUserPassword(User user, String password) throws SQLException {
         Connection connection = conDB.getConnect();
         PreparedStatement statement = connection.prepareStatement(
@@ -87,12 +99,20 @@ public class UserDAOImpl {
         statement.executeUpdate();
     }
 
+    /**
+     * вспомогательный метод для конструирования объекта пользователь из полей ResultSet
+     */
     private User constructingUserFromField(ResultSet set) throws SQLException {
         int id = set.getInt("id");
         String loginDB = set.getString("login");
         String first_name = set.getString("first_name");
         String last_name = set.getString("last_name");
-        String password = set.getString("password");
+        String password = null;
+        try {
+            password = set.getString("password");
+        } catch (SQLException ex) {
+            /*не все запросы содержат поле с паролем*/
+        }
         Role role = Role.valueOf(set.getString("role"));
         return new User(id, loginDB, first_name, last_name, password, role);
     }

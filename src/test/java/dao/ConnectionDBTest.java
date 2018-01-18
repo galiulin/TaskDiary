@@ -1,3 +1,5 @@
+package dao;
+
 import connection.*;
 import org.junit.jupiter.api.*;
 import pojo.Condition;
@@ -24,14 +26,11 @@ class ConnectionDBTest {
             public Connection getConnect() {
                 Connection connection = null;
                 try {
-                    Class.forName("org.h2.Driver");
                     connection = DriverManager.getConnection(
-                            "jdbc:h2:~/test_db/test_db;MODE=PostgreSQL",
-                            "sa",
-                            "");
+                            "jdbc:postgresql://localhost:5432/testdbtaskdairy",
+                            "admin",
+                            "admin");
                 } catch (SQLException e) {
-                    e.printStackTrace();
-                } catch (ClassNotFoundException e) {
                     e.printStackTrace();
                 }
                 return connection;
@@ -151,6 +150,7 @@ class ConnectionDBTest {
                         "PRIMARY KEY, " +
                         "login VARCHAR(40) NOT NULL, " +
                         "first_name VARCHAR(40), " +
+                        "last_name  VARCHAR(40), " +
                         "password VARCHAR(200) NOT NULL, " +
                         "role VARCHAR(15) NOT NULL " +
                         "CONSTRAINT user_t_role_t_role_fk " +
