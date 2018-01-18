@@ -15,7 +15,7 @@ class ConnectionDBTest {
     private static ConnectionDB newConnectionDBProxy;
     private static ConnectionDB newConnectionDB;
 
-    //    @Test
+//        @Test
     public void setup() throws NoSuchFieldException, SQLException {
         if (oldConnectionDB == null) {
             oldConnectionDB = ConnectionDBImpl.getInstance();
@@ -37,8 +37,14 @@ class ConnectionDBTest {
             }
 
             @Override
-            public <T> T getFromDB(Function<Connection, T> function) {
-                return function.apply(getConnect());
+            public <T> T getFromDB(FunctionSQL<Connection, T> function) {
+                T result = null;
+                try (Connection connection = getConnect()) {
+                    result = function.apply(connection);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                return result;
             }
         };
         newConnectionDBProxy = (ConnectionDB) Proxy.newProxyInstance(
@@ -51,7 +57,7 @@ class ConnectionDBTest {
 
         replaceConnectionDB(oldConnectionDB, newConnectionDBProxy);
 
-        createDB();
+//        createDB();
     }
 
     private void replaceConnectionDB(ConnectionDB oldConnectionDB, ConnectionDB newConnectionDB) throws NoSuchFieldException {
@@ -158,6 +164,11 @@ class ConnectionDBTest {
 
         statement.addBatch("CREATE UNIQUE INDEX IF NOT EXISTS user_t_id_uindex ON user_t (id);");
         statement.addBatch("CREATE UNIQUE INDEX IF NOT EXISTS user_t_login_uindex ON user_t (login);");
+        statement.addBatch(
+                "INSERT INTO user_t (login, first_name, last_name, password, role) VALUES " +
+                "('adminTest', 'adFirstName','adLastName','pass','ADMIN'), " +
+                "('managerTest', 'maFirstName','maLastName','pass','MANAGER'), " +
+                "('workerTest', 'woFirstName','woLastName','pass','ADMIN');");
         return statement.executeBatch();
     }
 

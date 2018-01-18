@@ -20,13 +20,16 @@ public class TaskDAOImpl implements TaskDAO {
      */
     @Override
     public List<Task> getAllTasks() throws SQLException {
-        List<Task> result = new ArrayList<>();
-        Connection connection = connectionDB.getConnect();
-        PreparedStatement statement = connection.prepareStatement("SELECT id, condition, description, date_add, dead_line, user_id FROM task;");
-        ResultSet resultSet = statement.executeQuery();
-        while (resultSet.next()) {
-            result.add(constructingTaskFromField(resultSet));
-        }
+        List<Task> result = connectionDB.getFromDB(connection -> {
+            List<Task> list = new ArrayList<>();
+            PreparedStatement statement = connection.prepareStatement(
+                    "SELECT id, condition, description, date_add, dead_line, user_id FROM task;");
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                list.add(constructingTaskFromField(resultSet));
+            }
+            return list;
+        });
         return result;
     }
 
@@ -44,7 +47,37 @@ public class TaskDAOImpl implements TaskDAO {
         return task;
     }
 
-    /** todo добавляет новую задачу в базу данных*/
-    /** todo меняет статус задачи*/
+    /**
+     * добавляет новую задачу в базу данных
+     */
+    @Override
+    public void addTask(Task task) {
+        connectionDB.getFromDB(connection -> {
+            PreparedStatement statement = connection.prepareStatement(
+                    "INSERT INTO task " +
+                            "(condition, description, date_add, dead_line, user_id) VALUES " +
+                            "(?, ?, ?, ?, ?) RETURNING id ");
+            ResultSet set = statement.executeQuery();
+            while (set.next()) {
+                task.setId(set.getInt("id"));
+            }
+            return task;
+        });
+    }
+
+    /**
+     *  меняет статус задачи
+     */
+    @Override
+    public void updateCondition(Task task, Condition condition) {
+        connectionDB.getFromDB(connection -> {
+            PreparedStatement statement = connection.prepareStatement(
+                    "UPDATE task SET condition = ? WHERE id = ?"
+            );
+            statement.setString(1, condition.name());
+            statement.setInt(2, task.getId());
+            return statement.execute();
+        });
+    }
 
 }

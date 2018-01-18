@@ -7,10 +7,13 @@ import org.junit.jupiter.api.Test;
 import pojo.Role;
 import pojo.User;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 class UserDAOImplTest {
     UserDAOImpl userDAO;
@@ -29,7 +32,8 @@ class UserDAOImplTest {
 
     @Test
     void getUserByLogin() throws SQLException {
-        System.out.println(userDAO.getUserByLogin("test_admin_1"));
+        assertNull(userDAO.getUserByLogin("test_admin_1"));
+        assertNotNull(userDAO.getUserByLogin("adminTest"));
     }
 
     @Test
@@ -39,6 +43,7 @@ class UserDAOImplTest {
         int count = userDAO.insertNewUser(user);
         User userFromDB = userDAO.getUserByLogin(login);
         assertEquals(user, userFromDB);
+        deleteUser(user);
     }
 
     @Test
@@ -48,6 +53,7 @@ class UserDAOImplTest {
         int count = userDAO.insertNewUser(user);
         User userFromDB = userDAO.getUserByLogin(login);
         assertEquals(user, userFromDB);
+        deleteUser(user);
     }
     @Test
     void insertNewUserManager() throws SQLException {
@@ -56,12 +62,25 @@ class UserDAOImplTest {
         int count = userDAO.insertNewUser(user);
         User userFromDB = userDAO.getUserByLogin(login);
         assertEquals(user, userFromDB);
+        deleteUser(user);
     }
 
     @Test
     void updateUserFields() throws SQLException {
-        User user = new User(9, "testUpdate", "updatedFirstName", "updatedLastName", "updatePass", Role.WORKER);
+        String login = "updateUserField";
+        User user = new User(login, "beforeUpdateFirstName", "beforeUpdateLastName", "updatePass", Role.WORKER);
+        userDAO.insertNewUser(user);
+        User user1 = userDAO.getUserByLogin(login);
+        assertEquals(user, user1);
+
+        user.setFirstName("afterUpdateFirstName");
+        user.setLastName("afterUpdateLastName");
+
         userDAO.updateUserFields(user);
+        User user2 = userDAO.getUserByLogin(login);
+        assertEquals(user, user2);
+        assertNotEquals(user1, user2);
+        deleteUser(user);
     }
 
     @Test
@@ -70,5 +89,42 @@ class UserDAOImplTest {
         for (User user : list){
             System.out.println(user);
         }
+    }
+
+    @Test
+    void testDeleteUser() throws SQLException {
+              User user =  new User("someLoginBeforeDelete","firstName", "lastNmee", "pass", Role.WORKER);
+        userDAO.insertNewUser(user);
+        deleteUser(user);
+
+        user = userDAO.getUserByLogin(user.getLogin());
+        assertNull(user);
+    }
+
+    void deleteUser(User user){
+        try {
+           Method method = userDAO.getClass().getDeclaredMethod("deleteUser", User.class);
+           method.setAccessible(true);
+           method.invoke(userDAO, user);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    void testUpdateUserPassword() throws SQLException {
+        String login = "updatePass";
+        User user = new User(login, "First_name", "last_name", "before update", Role.WORKER);
+        deleteUser(user);
+        userDAO.insertNewUser(user);
+        String newPass = "after update";
+        userDAO.updateUserPassword(user, newPass);
+        User user2 = userDAO.getUserByLogin(login);
+        assertEquals(newPass, user2.getPassword());
+        deleteUser(user);
     }
 }

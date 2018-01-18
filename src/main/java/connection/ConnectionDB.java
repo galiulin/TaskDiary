@@ -5,5 +5,5 @@ import java.util.function.Function;
 
 public interface ConnectionDB {
     public Connection getConnect();
-    public <T> T getFromDB(Function<Connection, T> function);
+    public <T> T getFromDB(FunctionSQL<Connection, T> function);
 }

@@ -72,8 +72,10 @@ public class UserDAOImpl implements UserDAO {
     private void deleteUser(User user) throws SQLException {
         Connection connection = conDB.getConnect();
         PreparedStatement statement = connection.prepareStatement(
-                "DELETE FROM user_t WHERE l"
+                "DELETE FROM user_t WHERE login = ?;"
         );
+        statement.setString(1, user.getLogin());
+        statement.execute();
     }
 
     @Override

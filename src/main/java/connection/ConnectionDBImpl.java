@@ -38,7 +38,7 @@ public class ConnectionDBImpl implements ConnectionDB {
         return getConnection();
     }
 
-    public <T> T getFromDB(Function<Connection, T> function) {
+    public <T> T getFromDB(FunctionSQL<Connection, T> function) {
         T obj = null;
         try (Connection connection = getConnection()){
             obj = function.apply(connection);
