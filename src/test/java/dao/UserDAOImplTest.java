@@ -30,12 +30,18 @@ class UserDAOImplTest {
         userDAO = new UserDAOImpl(ConnectionDBImpl.getInstance());
     }
 
+    /**
+     * получение пользователя по логину
+     * */
     @Test
     void getUserByLogin() throws SQLException {
         assertNull(userDAO.getUserByLogin("test_admin_1"));
         assertNotNull(userDAO.getUserByLogin("adminTest"));
     }
 
+    /**
+     * добавление нового пользователя Worker
+     * */
     @Test
     void insertNewUserWorker() throws SQLException {
         String login = "testMethodWorker";
@@ -46,6 +52,9 @@ class UserDAOImplTest {
         deleteUser(user);
     }
 
+    /**
+     * добавление нового администратора
+     * */
     @Test
     void insertNewUserAdmin() throws SQLException {
         String login = "testMethodAdmin";
@@ -55,6 +64,10 @@ class UserDAOImplTest {
         assertEquals(user, userFromDB);
         deleteUser(user);
     }
+
+    /**
+     * добавление нового менеджера
+     * */
     @Test
     void insertNewUserManager() throws SQLException {
         String login = "testMethodManager";
@@ -65,6 +78,9 @@ class UserDAOImplTest {
         deleteUser(user);
     }
 
+    /**
+     * Обновляем пользовательские поля фамилию и имя
+     * */
     @Test
     void updateUserFields() throws SQLException {
         String login = "updateUserField";
@@ -83,7 +99,9 @@ class UserDAOImplTest {
         deleteUser(user);
     }
 
-    @Test
+    /**
+     * получение списка всех пользователей
+     * */
     void getAllUsers() throws SQLException {
         List<User> list = userDAO.getAllUsers();
         for (User user : list){
@@ -91,6 +109,9 @@ class UserDAOImplTest {
         }
     }
 
+    /**
+     * проверка удаления пользователя из бд
+     * */
     @Test
     void testDeleteUser() throws SQLException {
               User user =  new User("someLoginBeforeDelete","firstName", "lastNmee", "pass", Role.WORKER);
@@ -101,7 +122,10 @@ class UserDAOImplTest {
         assertNull(user);
     }
 
-    void deleteUser(User user){
+    /**
+     * вспомогательный метод для удаления пользователя
+     * */
+    private void deleteUser(User user){
         try {
            Method method = userDAO.getClass().getDeclaredMethod("deleteUser", User.class);
            method.setAccessible(true);
@@ -115,6 +139,9 @@ class UserDAOImplTest {
         }
     }
 
+    /**
+     * тестирование удаления пользователя
+     * */
     @Test
     void testUpdateUserPassword() throws SQLException {
         String login = "updatePass";

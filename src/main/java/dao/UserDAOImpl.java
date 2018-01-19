@@ -33,7 +33,9 @@ public class UserDAOImpl implements UserDAO {
         return result;
     }
 
-    /***/
+    /**
+     * получение всех User из базы данных
+     * */
     @Override
     public List<User> getAllUsers() throws SQLException {
         List<User> result = new ArrayList<>();
@@ -46,6 +48,9 @@ public class UserDAOImpl implements UserDAO {
         return result;
     }
 
+    /**
+     * вставка нового пользователя
+     * */
     @Override
     public int insertNewUser(User user) throws SQLException {
         Connection connection = conDB.getConnect();
@@ -67,7 +72,7 @@ public class UserDAOImpl implements UserDAO {
     }
 
     /**
-     * метод не для публичного доступа
+     * метод не для публичного доступа удаление пользователя
      */
     private void deleteUser(User user) throws SQLException {
         Connection connection = conDB.getConnect();
@@ -78,18 +83,25 @@ public class UserDAOImpl implements UserDAO {
         statement.execute();
     }
 
+    /**
+     * Обновление пользовательских данных имени, фамилии, пароль
+     * */
     @Override
     public void updateUserFields(User user) throws SQLException {
         Connection connection = conDB.getConnect();
         PreparedStatement statement = connection.prepareStatement(
-                "UPDATE user_t SET first_name = ?, last_name = ? WHERE login = ?"
+                "UPDATE user_t SET first_name = ?, last_name = ?, password = ? WHERE login = ?"
         );
-        statement.setString(3, user.getLogin());
         statement.setString(1, user.getFirstName());
         statement.setString(2, user.getLastName());
+        statement.setString(3, user.getPassword());
+        statement.setString(4, user.getLogin());
         statement.executeUpdate();
     }
 
+    /**
+     * Обновление пароля пользователя
+     * */
     @Override
     public void updateUserPassword(User user, String password) throws SQLException {
         Connection connection = conDB.getConnect();

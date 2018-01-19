@@ -5,10 +5,10 @@ import javax.xml.bind.annotation.*;
 import java.util.Objects;
 
 //Определяем корневой элемент
-@XmlRootElement(name="Name")
+@XmlRootElement(name = "User")
 
 //Определяем последовательность тегов в XML
-@XmlType(propOrder = {"id","login","firstName","lastName","role"})
+@XmlType(propOrder = {"id", "login", "firstName", "lastName", "role"})
 public class User {
 
     private int id;
@@ -18,7 +18,7 @@ public class User {
     private String password;
     private Role role;
 
-    public User(){
+    public User() {
 
     }
 

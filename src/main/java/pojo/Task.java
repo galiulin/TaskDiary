@@ -1,15 +1,34 @@
 package pojo;
 
 
+import xml.DateTimeAdapter;
+
+import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.sql.Timestamp;
 
+@XmlRootElement(name = "Task")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Task {
 
+    @XmlAttribute
     private int id;
+
+    @XmlElement(name = "condition")
     private Condition condition;
+
+    @XmlElement(name = "description")
     private String description;
-    private java.sql.Timestamp dateAdd;
-    private java.sql.Timestamp deadLine;
+
+    @XmlElement(name = "date_add")
+    @XmlJavaTypeAdapter(DateTimeAdapter.class)
+    private Timestamp dateAdd;
+
+    @XmlElement(name = "dead_line")
+    @XmlJavaTypeAdapter(DateTimeAdapter.class)
+    private Timestamp deadLine;
+
+    @XmlElement(name = "user_id")
     private int userId;
 
     public Task(Condition condition, String description, Timestamp dateAdd, Timestamp deadLine, int userId) {
@@ -28,6 +47,8 @@ public class Task {
         this.deadLine = deadLine;
         this.userId = userId;
     }
+
+    public Task(){}
 
     public int getId() {
         return id;
@@ -56,7 +77,7 @@ public class Task {
     }
 
 
-    public java.sql.Timestamp getDateAdd() {
+    public Timestamp getDateAdd() {
         return dateAdd;
     }
 
@@ -65,7 +86,7 @@ public class Task {
     }
 
 
-    public java.sql.Timestamp getDeadLine() {
+    public Timestamp getDeadLine() {
         return deadLine;
     }
 
