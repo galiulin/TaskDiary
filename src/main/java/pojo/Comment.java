@@ -18,7 +18,7 @@ public class Comment {
         this.comment = comment;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
@@ -27,7 +27,7 @@ public class Comment {
     }
 
 
-    public long getTaskId() {
+    public int getTaskId() {
         return taskId;
     }
 
@@ -36,7 +36,7 @@ public class Comment {
     }
 
 
-    public long getUserId() {
+    public int getUserId() {
         return userId;
     }
 
@@ -49,7 +49,7 @@ public class Comment {
         return date;
     }
 
-    public void setDate(java.sql.Timestamp date) {
+    public void setTimestamp(java.sql.Timestamp date) {
         this.date = date;
     }
 

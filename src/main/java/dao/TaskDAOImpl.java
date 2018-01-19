@@ -34,7 +34,7 @@ public class TaskDAOImpl implements TaskDAO {
     }
 
     /**
-     * вспомогательный метод для конструирования объекта Зачача из полей ResultSet
+     * вспомогательный метод для конструирования объекта Задача из полей ResultSet
      */
     private Task constructingTaskFromField(ResultSet resultSet) throws SQLException {
         int id = resultSet.getInt("id");
