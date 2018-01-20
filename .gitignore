@@ -1,6 +1,7 @@
 
-src/main/java/trash/
-src/test/java/trash/
+src/main/java/trash/*
+src/test/java/trash/*
+out/
 
 # built application files
 *.apk
