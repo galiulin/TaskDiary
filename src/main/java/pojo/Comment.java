@@ -2,6 +2,7 @@ package pojo;
 
 
 import java.sql.Timestamp;
+import java.util.Objects;
 
 public class Comment {
 
@@ -62,4 +63,32 @@ public class Comment {
         this.comment = comment;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Comment)) return false;
+        Comment comment1 = (Comment) o;
+        return getId() == comment1.getId() &&
+                getTaskId() == comment1.getTaskId() &&
+                getUserId() == comment1.getUserId() &&
+                Objects.equals(getDate(), comment1.getDate()) &&
+                Objects.equals(getComment(), comment1.getComment());
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(getId(), getTaskId(), getUserId(), getDate(), getComment());
+    }
+
+    @Override
+    public String toString() {
+        return "Comment{" +
+                "id=" + id +
+                ", taskId=" + taskId +
+                ", userId=" + userId +
+                ", date=" + date +
+                ", comment='" + comment + '\'' +
+                '}';
+    }
 }

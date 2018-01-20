@@ -35,7 +35,7 @@ public class UserDAOImpl implements UserDAO {
 
     /**
      * получение всех User из базы данных
-     * */
+     */
     @Override
     public List<User> getAllUsers() throws SQLException {
         List<User> result = new ArrayList<>();
@@ -50,7 +50,7 @@ public class UserDAOImpl implements UserDAO {
 
     /**
      * вставка нового пользователя
-     * */
+     */
     @Override
     public int insertNewUser(User user) throws SQLException {
         Connection connection = conDB.getConnect();
@@ -85,7 +85,7 @@ public class UserDAOImpl implements UserDAO {
 
     /**
      * Обновление пользовательских данных имени, фамилии, пароль
-     * */
+     */
     @Override
     public void updateUserFields(User user) throws SQLException {
         Connection connection = conDB.getConnect();
@@ -101,7 +101,7 @@ public class UserDAOImpl implements UserDAO {
 
     /**
      * Обновление пароля пользователя
-     * */
+     */
     @Override
     public void updateUserPassword(User user, String password) throws SQLException {
         Connection connection = conDB.getConnect();

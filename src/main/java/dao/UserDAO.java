@@ -7,18 +7,28 @@ import java.util.List;
 
 public interface UserDAO {
 
-    /**получение пользователя по логину*/
+    /**
+     * получение пользователя по логину
+     */
     User getUserByLogin(String login) throws SQLException;
 
-    /**получение списка всех пользователей*/
+    /**
+     * получение списка всех пользователей
+     */
     List<User> getAllUsers() throws SQLException;
 
-    /**вставка нового пользователя*/
+    /**
+     * вставка нового пользователя
+     */
     int insertNewUser(User user) throws SQLException;
 
-    /**обновление полей с фамилией и именем у пользователя*/
+    /**
+     * обновление полей с фамилией и именем у пользователя
+     */
     void updateUserFields(User user) throws SQLException;
 
-    /**обновление пользовательского пароля*/
+    /**
+     * обновление пользовательского пароля
+     */
     void updateUserPassword(User user, String password) throws SQLException;
 }

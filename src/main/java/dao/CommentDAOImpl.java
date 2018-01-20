@@ -1,6 +1,7 @@
 package dao;
 
 import connection.ConnectionDB;
+import org.apache.log4j.Logger;
 import pojo.Comment;
 import pojo.Task;
 import pojo.User;
@@ -9,36 +10,42 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CommentDAOImpl {
+public class CommentDAOImpl implements CommentDAO {
+    Logger logger = Logger.getLogger(CommentDAOImpl.class);
     ConnectionDB connectionDB;
 
     public CommentDAOImpl(ConnectionDB connectionDB) {
         this.connectionDB = connectionDB;
+
+        logger.trace("init");
     }
 
     /**
      * добавление комментария к задаче
      */
-    public void addComment(Task task, Comment comment, User user, Timestamp time) {
+    @Override
+    public Comment addComment(Task task, Comment comment, User user, Timestamp time) {
         comment.setUserId(user.getId());
         comment.setTaskId(task.getId());
         comment.setTimestamp(time);
-        addComment(comment);
+        return addComment(comment);
     }
 
     /**
      * добавление комментария к задаче
      */
-    public void addComment(int taskId, String comment, int userId, Timestamp time) {
+    @Override
+    public Comment addComment(int taskId, String comment, int userId, Timestamp time) {
         Comment comm = new Comment(taskId, userId, time, comment);
-        addComment(comm);
+        return addComment(comm);
     }
 
     /**
      * добавление комментария к задаче
      */
-    public void addComment(Comment comment) {
-        connectionDB.getFromDB(conn -> {
+    @Override
+    public Comment addComment(Comment comment) {
+        return connectionDB.getFromDB(conn -> {
             PreparedStatement statement = conn.prepareStatement(
                     "INSERT INTO comment (task_id, user_id, date, comment) VALUES " +
                             "(?, ?, ?, ?) RETURNING id;"
@@ -51,6 +58,7 @@ public class CommentDAOImpl {
             while (resId.next()) {
                 comment.setId(resId.getInt("id"));
             }
+            logger.trace(String.format("addComment(%s)", comment));
 
             return comment;
         });
@@ -59,6 +67,7 @@ public class CommentDAOImpl {
     /**
      * получение всех комментариев
      */
+    @Override
     public List<Comment> getAllComments() {
         return connectionDB.getFromDB(conn -> {
             List<Comment> list = new ArrayList<>();
@@ -67,6 +76,7 @@ public class CommentDAOImpl {
             while (set.next()) {
                 list.add(parseResSet(set));
             }
+            logger.trace(String.format("getAllComments()"));
             return list;
         });
     }
@@ -88,6 +98,7 @@ public class CommentDAOImpl {
     /**
      * получение комментария по id пользователя
      */
+    @Override
     public List<Comment> getCommentByUserId(int userId) {
         return connectionDB.getFromDB(conn -> {
             List<Comment> result = new ArrayList<>();
@@ -97,6 +108,7 @@ public class CommentDAOImpl {
             while (set.next()) {
                 result.add(parseResSet(set));
             }
+            logger.trace(String.format("getCommentByUserId(%d)", userId));
             return result;
         });
     }
@@ -104,6 +116,7 @@ public class CommentDAOImpl {
     /**
      * получение комментария по id задачи
      */
+    @Override
     public List<Comment> getCommentByTaskId(int taskId) {
         return connectionDB.getFromDB(conn -> {
             List<Comment> result = new ArrayList<>();
@@ -113,6 +126,7 @@ public class CommentDAOImpl {
             while (set.next()) {
                 result.add(parseResSet(set));
             }
+            logger.trace(String.format("getCommentByTaksId(%d)", taskId));
             return result;
         });
     }
