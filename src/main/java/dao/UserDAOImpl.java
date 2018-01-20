@@ -21,16 +21,17 @@ public class UserDAOImpl implements UserDAO {
      */
     @Override
     public User getUserByLogin(String login) throws SQLException {
-        User result = null;
-        Connection connection = conDB.getConnect();
-        PreparedStatement statement = connection.prepareStatement(
-                "SELECT id, login, first_name, last_name, password, role FROM user_t WHERE user_t.login = ?;");
-        statement.setString(1, login);
-        ResultSet resultSet = statement.executeQuery();
-        while (resultSet.next()) {
-            result = constructingUserFromField(resultSet);
-        }
-        return result;
+        return conDB.getFromDB(connection -> {
+            User result = null;
+            PreparedStatement statement = connection.prepareStatement(
+                    "SELECT id, login, first_name, last_name, password, role FROM user_t WHERE user_t.login = ?;");
+            statement.setString(1, login);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                result = constructingUserFromField(resultSet);
+            }
+            return result;
+        });
     }
 
     /**
@@ -38,14 +39,15 @@ public class UserDAOImpl implements UserDAO {
      */
     @Override
     public List<User> getAllUsers() throws SQLException {
-        List<User> result = new ArrayList<>();
-        Connection connection = conDB.getConnect();
-        PreparedStatement statement = connection.prepareStatement("SELECT * FROM user_t");
-        ResultSet set = statement.executeQuery();
-        while (set.next()) {
-            result.add(constructingUserFromField(set));
-        }
-        return result;
+        return conDB.getFromDB(connection -> {
+            List<User> result = new ArrayList<>();
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM user_t");
+            ResultSet set = statement.executeQuery();
+            while (set.next()) {
+                result.add(constructingUserFromField(set));
+            }
+            return result;
+        });
     }
 
     /**
@@ -53,50 +55,53 @@ public class UserDAOImpl implements UserDAO {
      */
     @Override
     public int insertNewUser(User user) throws SQLException {
-        Connection connection = conDB.getConnect();
-        PreparedStatement statement = connection.prepareStatement(
-                "INSERT INTO user_t (login, first_name, last_name, password, role) " +
-                        "VALUES (?, ?, ?, ?, ?) RETURNING id;");
-        statement.setString(1, user.getLogin());
-        statement.setString(2, user.getFirstName());
-        statement.setString(3, user.getLastName());
-        statement.setString(4, user.getPassword());
-        statement.setString(5, user.getRole().name());
-        int result = -1;
-        ResultSet set = statement.executeQuery();
-        while (set.next()) {
-            result = set.getInt("id");
-        }
-        user.setId(result);
-        return result;
+        return conDB.getFromDB(connection -> {
+            PreparedStatement statement = connection.prepareStatement(
+                    "INSERT INTO user_t (login, first_name, last_name, password, role) " +
+                            "VALUES (?, ?, ?, ?, ?) RETURNING id;");
+            statement.setString(1, user.getLogin());
+            statement.setString(2, user.getFirstName());
+            statement.setString(3, user.getLastName());
+            statement.setString(4, user.getPassword());
+            statement.setString(5, user.getRole().name());
+            int result = -1;
+            ResultSet set = statement.executeQuery();
+            while (set.next()) {
+                result = set.getInt("id");
+            }
+            user.setId(result);
+            return result;
+        });
     }
 
     /**
      * метод не для публичного доступа удаление пользователя
      */
-    private void deleteUser(User user) throws SQLException {
-        Connection connection = conDB.getConnect();
-        PreparedStatement statement = connection.prepareStatement(
-                "DELETE FROM user_t WHERE login = ?;"
-        );
-        statement.setString(1, user.getLogin());
-        statement.execute();
+    private Boolean deleteUser(User user) throws SQLException {
+        return conDB.getFromDB(connection -> {
+            PreparedStatement statement = connection.prepareStatement(
+                    "DELETE FROM user_t WHERE login = ?;"
+            );
+            statement.setString(1, user.getLogin());
+            return statement.execute();
+        });
     }
 
     /**
      * Обновление пользовательских данных имени, фамилии, пароль
      */
     @Override
-    public void updateUserFields(User user) throws SQLException {
-        Connection connection = conDB.getConnect();
-        PreparedStatement statement = connection.prepareStatement(
-                "UPDATE user_t SET first_name = ?, last_name = ?, password = ? WHERE login = ?"
-        );
-        statement.setString(1, user.getFirstName());
-        statement.setString(2, user.getLastName());
-        statement.setString(3, user.getPassword());
-        statement.setString(4, user.getLogin());
-        statement.executeUpdate();
+    public Integer updateUserFields(User user) throws SQLException {
+        return conDB.getFromDB(connection -> {
+            PreparedStatement statement = connection.prepareStatement(
+                    "UPDATE user_t SET first_name = ?, last_name = ?, password = ? WHERE login = ?"
+            );
+            statement.setString(1, user.getFirstName());
+            statement.setString(2, user.getLastName());
+            statement.setString(3, user.getPassword());
+            statement.setString(4, user.getLogin());
+            return statement.executeUpdate();
+        });
     }
 
     /**
@@ -104,13 +109,14 @@ public class UserDAOImpl implements UserDAO {
      */
     @Override
     public void updateUserPassword(User user, String password) throws SQLException {
-        Connection connection = conDB.getConnect();
-        PreparedStatement statement = connection.prepareStatement(
-                "UPDATE user_t SET password = ? WHERE login = ?"
-        );
-        statement.setString(1, password);
-        statement.setString(2, user.getLogin());
-        statement.executeUpdate();
+        conDB.getFromDB(connection -> {
+            PreparedStatement statement = connection.prepareStatement(
+                    "UPDATE user_t SET password = ? WHERE login = ?"
+            );
+            statement.setString(1, password);
+            statement.setString(2, user.getLogin());
+            return statement.executeUpdate();
+        });
     }
 
     /**

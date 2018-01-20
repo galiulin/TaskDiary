@@ -1,8 +1,12 @@
 package connection;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import dao.UserDAO;
+import dao.UserDAOImpl;
+import org.apache.log4j.Logger;
+import pojo.User;
+
+import java.sql.*;
+import java.util.List;
 import java.util.function.Function;
 
 public class ConnectionDBImpl implements ConnectionDB {
@@ -13,6 +17,7 @@ public class ConnectionDBImpl implements ConnectionDB {
     private static String user = "admin";
     private static String pass = "admin";
 
+    private static Logger logger = Logger.getLogger(ConnectionDBImpl.class);
 
     private ConnectionDBImpl() {
     }
@@ -24,11 +29,14 @@ public class ConnectionDBImpl implements ConnectionDB {
     private static Connection getConnection() {
         Connection connection = null;
         try {
+            Class.forName("org.postgresql.Driver");
             connection = DriverManager.getConnection(
                     String.format(CONNECTION_URL, PORT, DB),
                     user,
                     pass);
         } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
         return connection;

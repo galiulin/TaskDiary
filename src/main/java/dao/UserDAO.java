@@ -25,7 +25,7 @@ public interface UserDAO {
     /**
      * обновление полей с фамилией и именем у пользователя
      */
-    void updateUserFields(User user) throws SQLException;
+    Integer updateUserFields(User user) throws SQLException;
 
     /**
      * обновление пользовательского пароля
