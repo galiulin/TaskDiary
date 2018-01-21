@@ -1,5 +1,7 @@
 package utils.sendlog;
 
+import org.apache.log4j.Logger;
+
 import java.util.Properties;
 import javax.mail.*;
 import javax.mail.internet.AddressException;
@@ -7,18 +9,17 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 public class SendMailTLS {
+    private static Logger logger = Logger.getLogger(SendMailTLS.class);
+
     final static String username = "vecjhrf2@gmail.com";
     final static String password = "QWEqwe123";
     static Properties properties = new Properties();
-    static {
-
-    }
 
     public static void main(String[] args) {
-        properties.put("mail.smtp.auth", "true");
         properties.put("mail.smtp.starttls.enable", "true");
         properties.put("mail.smtp.host", "smtp.gmail.com");
-        properties.put("mail.smtp.post", "587");
+        properties.put("mail.smtp.auth", "true");
+        properties.put("mail.smtp.port", "587");
 
         Session session = Session.getInstance(properties, new javax.mail.Authenticator() {
             @Override
@@ -33,9 +34,9 @@ public class SendMailTLS {
             message.setSubject("Testing Subject");
             message.setText("this is a test");
 
-            Transport.send(message); //fixme дальше работа не продолжается
+            Transport.send(message);
 
-            System.out.println("done");
+            logger.trace("было отправлено сообщение по электронной почте");
         } catch (AddressException e) {
             e.printStackTrace();
         } catch (MessagingException e) {
