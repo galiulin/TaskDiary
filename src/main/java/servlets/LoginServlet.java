@@ -29,8 +29,9 @@ public class LoginServlet extends HttpServlet {
         String login = req.getParameter("login");
         String userPassword = req.getParameter("password");
         if (LoginService.checkUser(login, userPassword)) {
-            resp.sendRedirect("/dashboard");
-            logger.trace(req.getSession().getId().toString() + " access success, redirect /dashboard");
+            req.getSession().setAttribute("login", login);
+            resp.sendRedirect("/inner/dashboard");
+            logger.trace(req.getSession().getId().toString() + " access success, redirect /inner/dashboard");
         } else {
             logger.trace(req.getSession().getId().toString() + " access denied");
             req.getRequestDispatcher("/login.jsp?access=access_denied").forward(req, resp);
