@@ -33,7 +33,7 @@ public class LoginService {
                 access = true;
             }
         } catch (SQLException e) {
-            logger.debug(e.getMessage());
+            logger.warn(e.getMessage());
         }
         return access;
     }

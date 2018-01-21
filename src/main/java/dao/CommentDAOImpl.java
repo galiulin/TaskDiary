@@ -24,7 +24,7 @@ public class CommentDAOImpl implements CommentDAO {
      * добавление комментария к задаче
      */
     @Override
-    public Comment addComment(Task task, Comment comment, User user, Timestamp time) {
+    public Comment addComment(Task task, Comment comment, User user, Timestamp time) throws SQLException {
         comment.setUserId(user.getId());
         comment.setTaskId(task.getId());
         comment.setTimestamp(time);
@@ -35,7 +35,7 @@ public class CommentDAOImpl implements CommentDAO {
      * добавление комментария к задаче
      */
     @Override
-    public Comment addComment(int taskId, String comment, int userId, Timestamp time) {
+    public Comment addComment(int taskId, String comment, int userId, Timestamp time) throws SQLException {
         Comment comm = new Comment(taskId, userId, time, comment);
         return addComment(comm);
     }
@@ -44,7 +44,7 @@ public class CommentDAOImpl implements CommentDAO {
      * добавление комментария к задаче
      */
     @Override
-    public Comment addComment(Comment comment) {
+    public Comment addComment(Comment comment) throws SQLException {
         return connectionDB.getFromDB(conn -> {
             PreparedStatement statement = conn.prepareStatement(
                     "INSERT INTO comment (task_id, user_id, date, comment) VALUES " +
@@ -68,7 +68,7 @@ public class CommentDAOImpl implements CommentDAO {
      * получение всех комментариев
      */
     @Override
-    public List<Comment> getAllComments() {
+    public List<Comment> getAllComments() throws SQLException {
         return connectionDB.getFromDB(conn -> {
             List<Comment> list = new ArrayList<>();
             Statement statement = conn.createStatement();
@@ -99,7 +99,7 @@ public class CommentDAOImpl implements CommentDAO {
      * получение комментария по id пользователя
      */
     @Override
-    public List<Comment> getCommentByUserId(int userId) {
+    public List<Comment> getCommentByUserId(int userId) throws SQLException {
         return connectionDB.getFromDB(conn -> {
             List<Comment> result = new ArrayList<>();
             PreparedStatement statement = conn.prepareStatement("SELECT id, comment, task_id, user_id, date FROM comment WHERE user_id = ?;");
@@ -117,7 +117,7 @@ public class CommentDAOImpl implements CommentDAO {
      * получение комментария по id задачи
      */
     @Override
-    public List<Comment> getCommentByTaskId(int taskId) {
+    public List<Comment> getCommentByTaskId(int taskId) throws SQLException {
         return connectionDB.getFromDB(conn -> {
             List<Comment> result = new ArrayList<>();
             PreparedStatement statement = conn.prepareStatement("SELECT id, comment, task_id, user_id, date FROM comment WHERE task_id = ?;");

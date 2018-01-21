@@ -1,5 +1,6 @@
 package xml;
 
+import pojo.Comment;
 import pojo.Task;
 import pojo.User;
 
@@ -30,6 +31,19 @@ public class JaxbUnmarshall {
             Unmarshaller unmarshaller = context.createUnmarshaller();
             XmlTask xmlTask = (XmlTask) unmarshaller.unmarshal(new File(filePath));
             result = xmlTask.getTasks();
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public static List<Comment> convertXmlToComments(String filePath) {
+        List<Comment> result = null;
+        try {
+            JAXBContext context = JAXBContext.newInstance(XmlComment.class);
+            Unmarshaller unmarshaller = context.createUnmarshaller();
+            XmlComment xmlComment = (XmlComment) unmarshaller.unmarshal(new File(filePath));
+            result = xmlComment.getComments();
         } catch (JAXBException e) {
             e.printStackTrace();
         }

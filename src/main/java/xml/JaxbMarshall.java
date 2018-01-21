@@ -1,9 +1,9 @@
 package xml;
 
 import connection.ConnectionDBImpl;
-import dao.TaskDAO;
-import dao.TaskDAOImpl;
-import dao.UserDAOImpl;
+import dao.*;
+import org.apache.log4j.Logger;
+import pojo.Comment;
 import pojo.Task;
 import pojo.User;
 
@@ -15,6 +15,8 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class JaxbMarshall {
+
+    private static Logger logger = Logger.getLogger(JaxbMarshall.class);
 
     /**
      * сохраняем User в XML файл
@@ -59,6 +61,26 @@ public class JaxbMarshall {
             e.printStackTrace();
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+
+    public static void converCommentToXml(String filePath) {
+        try {
+            JAXBContext context = JAXBContext.newInstance(XmlComment.class);
+            Marshaller marshaller = context.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+
+            CommentDAO commentDAO = new CommentDAOImpl(ConnectionDBImpl.getInstance());
+            List<Comment> comments = commentDAO.getAllComments();
+
+            XmlComment xmlComment = new XmlComment();
+            xmlComment.setComments(comments);
+            marshaller.marshal(xmlComment, new File(filePath));
+        } catch (JAXBException e) {
+            logger.warn(e.getMessage(), e);
+        } catch (SQLException e) {
+            logger.warn(e.getMessage(), e);
         }
     }
 }

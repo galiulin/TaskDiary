@@ -1,0 +1,16 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-4.3.xsd">
+    <!--<bean id="downloader" class="common.ftp.FTPDownloader">-->
+
+    <!--</bean>-->
+    <!--<bean id="uploader" class="common.net.NetUploader">-->
+
+    <!--</bean>-->
+
+    <!--<bean id="app" class="with.Application">-->
+        <!--<property name="downloader" ref="downloader"/>-->
+        <!--<property name="uploader" ref="uploader"/>-->
+    <!--</bean>-->
+</beans>

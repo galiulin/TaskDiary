@@ -46,12 +46,13 @@ public class ConnectionDBImpl implements ConnectionDB {
         return getConnection();
     }
 
-    public <T> T getFromDB(FunctionSQL<Connection, T> function) {
+    public <T> T getFromDB(FunctionSQL<Connection, T> function) throws SQLException {
         T obj = null;
         try (Connection connection = getConnection()){
             obj = function.apply(connection);
         } catch (SQLException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
+            throw e;
         }
         return obj;
     }

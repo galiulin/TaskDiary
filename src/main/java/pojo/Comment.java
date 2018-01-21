@@ -1,15 +1,31 @@
 package pojo;
 
 
+import xml.DateTimeAdapter;
+
+import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.sql.Timestamp;
 import java.util.Objects;
 
+@XmlRootElement(name = "comment")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Comment {
 
+    @XmlAttribute
     private int id;
+
+    @XmlElement(name = "task_id")
     private int taskId;
+
+    @XmlElement(name = "user_id")
     private int userId;
+
+    @XmlElement(name = "date")
+    @XmlJavaTypeAdapter(DateTimeAdapter.class)
     private Timestamp date;
+
+    @XmlElement(name = "comment_field")
     private String comment;
 
     public Comment(int taskId, int userId, Timestamp date, String comment) {
@@ -18,6 +34,8 @@ public class Comment {
         this.date = date;
         this.comment = comment;
     }
+
+    public Comment(){}
 
     public int getId() {
         return id;

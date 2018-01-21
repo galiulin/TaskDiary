@@ -9,7 +9,7 @@ import java.util.List;
 public interface TaskDAO {
     List<Task> getAllTasks() throws SQLException;
 
-    void addTask(Task task);
+    void addTask(Task task) throws SQLException;
 
-    void updateCondition(Task task, Condition condition);
+    void updateCondition(Task task, Condition condition) throws SQLException;
 }

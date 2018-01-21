@@ -243,7 +243,7 @@ class ConnectionDBTest {
     }
 
     /**
-     * Получаем доступ к приватному final полю и устанавливаем собственный объект
+     * Получаем доступ к final полю и устанавливаем собственный объект
      */
     public static void setFinalStatic(Field field, Object newValue) {
         try {

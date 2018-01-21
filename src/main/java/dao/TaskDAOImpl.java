@@ -51,7 +51,7 @@ public class TaskDAOImpl implements TaskDAO {
      * добавляет новую задачу в базу данных
      */
     @Override
-    public void addTask(Task task) {
+    public void addTask(Task task) throws SQLException {
         connectionDB.getFromDB(connection -> {
             PreparedStatement statement = connection.prepareStatement(
                     "INSERT INTO task " +
@@ -69,7 +69,7 @@ public class TaskDAOImpl implements TaskDAO {
      *  меняет статус задачи
      */
     @Override
-    public void updateCondition(Task task, Condition condition) {
+    public void updateCondition(Task task, Condition condition) throws SQLException {
         connectionDB.getFromDB(connection -> {
             PreparedStatement statement = connection.prepareStatement(
                     "UPDATE task SET condition = ? WHERE id = ?"
