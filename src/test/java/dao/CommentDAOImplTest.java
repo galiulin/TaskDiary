@@ -28,12 +28,12 @@ class CommentDAOImplTest {
 
 //    @Test
     void addComment() {
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        Comment test = commentDAO.addComment(2, "test", 3, timestamp);
-        System.out.println(test);
 
         Connection connect = ConnectionDBImpl.getInstance().getConnect();
         try {
+            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+            Comment test = commentDAO.addComment(2, "test", 3, timestamp);
+            System.out.println(test);
             PreparedStatement statement = connect.prepareStatement("DELETE FROM comment WHERE id = ?");
             statement.setInt(1, test.getId());
             statement.execute();
@@ -46,19 +46,34 @@ class CommentDAOImplTest {
 
 //    @Test
     void getAllComments() {
-        List<Comment> list = commentDAO.getAllComments();
+        List<Comment> list = null;
+        try {
+            list = commentDAO.getAllComments();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         list.stream().forEach(System.out::println);
     }
 
 //    @Test
     void getCommentByUserId() {
-        List<Comment> list = commentDAO.getCommentByUserId(3);
+        List<Comment> list = null;
+        try {
+            list = commentDAO.getCommentByUserId(3);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         list.stream().forEach(System.out::println);
     }
 
 //    @Test
     void getCommentByTaskId() {
-        List<Comment> list = commentDAO.getCommentByTaskId(3);
+        List<Comment> list = null;
+        try {
+            list = commentDAO.getCommentByTaskId(3);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         list.stream().forEach(System.out::println);
     }
 }
