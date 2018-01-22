@@ -80,4 +80,22 @@ public class TaskDAOImpl implements TaskDAO {
         });
     }
 
+    /**
+     * получение задачи по ее id
+     * */
+    @Override
+    public Task getTaskById(int id) throws SQLException {
+        return connectionDB.getFromDB(connection -> {
+            PreparedStatement statement = connection.prepareStatement(
+                    "SELECT id, condition, description, date_add, dead_line, user_id FROM task WHERE task.id = ?"
+            );
+            statement.setInt(1, id);
+            ResultSet set = statement.executeQuery();
+            Task task = null;
+            while (set.next()){
+                task = constructingTaskFromField(set);
+            }
+            return task;
+        });
+    }
 }

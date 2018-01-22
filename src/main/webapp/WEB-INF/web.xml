@@ -26,6 +26,16 @@
         <url-pattern>/inner/dashboard</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>task</servlet-name>
+        <servlet-class>servlets.TaskServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>task</servlet-name>
+        <url-pattern>/inner/task</url-pattern>
+    </servlet-mapping>
+
     <filter>
         <filter-name>Authfilter</filter-name>
         <filter-class>servlets.filter.AuthFilter</filter-class>

@@ -12,4 +12,9 @@ public interface TaskDAO {
     void addTask(Task task) throws SQLException;
 
     void updateCondition(Task task, Condition condition) throws SQLException;
+
+    /**
+     * получение задачи по id
+     * */
+    Task getTaskById(int id) throws SQLException;
 }
