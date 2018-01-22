@@ -1,5 +1,8 @@
 package servlets;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 import pojo.Task;
 import service.DashboardService;
 
@@ -12,7 +15,14 @@ import java.util.List;
 
 public class DashboardServlet extends HttpServlet {
 
-    private DashboardService dashboardService = new DashboardService();
+    @Autowired
+    private DashboardService dashboardService;
+
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this, getServletContext());
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

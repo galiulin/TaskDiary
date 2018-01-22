@@ -1,6 +1,8 @@
 package servlets;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 import service.LoginService;
 
 import javax.servlet.ServletException;
@@ -14,6 +16,14 @@ public class LoginServlet extends HttpServlet {
     private static final Logger logger = Logger.getLogger(LoginServlet.class);
     private static final String encoding = "Cp1251";
 
+    @Autowired
+    private LoginService loginService;
+
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this, getServletContext());
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -28,7 +38,7 @@ public class LoginServlet extends HttpServlet {
         resp.setCharacterEncoding(encoding);
         String login = req.getParameter("login");
         String userPassword = req.getParameter("password");
-        if (LoginService.checkUser(login, userPassword)) {
+        if (this.loginService.checkUser(login, userPassword)) {
             req.getSession().setAttribute("login", login);
             resp.sendRedirect("/inner/dashboard");
             logger.trace(req.getSession().getId().toString() + " access success, redirect /inner/dashboard");

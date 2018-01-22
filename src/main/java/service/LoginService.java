@@ -4,13 +4,15 @@ import connection.ConnectionDBImpl;
 import dao.UserDAO;
 import dao.UserDAOImpl;
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Component;
 import pojo.User;
 
 import java.sql.SQLException;
 
+@Component
 public class LoginService {
 
-    private static UserDAO userDAO = new UserDAOImpl(ConnectionDBImpl.getInstance());
+    private UserDAO userDAO = new UserDAOImpl(ConnectionDBImpl.getInstance());
     private static Logger logger = Logger.getLogger(LoginService.class);
 
     /**
@@ -20,7 +22,7 @@ public class LoginService {
      * <p>
      * false во всех остальных случаях
      */
-    public static boolean checkUser(String login, String password) {
+    public boolean checkUser(String login, String password) {
         if (login == null || password == null) {
             logger.debug("Login = " + login + ", password = " + password);
             return false;

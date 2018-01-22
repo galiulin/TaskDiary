@@ -4,10 +4,12 @@ import connection.ConnectionDBImpl;
 import dao.TaskDAO;
 import dao.TaskDAOImpl;
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Component;
 import pojo.Task;
 
 import java.sql.SQLException;
 
+@Component
 public class TaskService {
 
     Logger logger = Logger.getLogger(TaskService.class);

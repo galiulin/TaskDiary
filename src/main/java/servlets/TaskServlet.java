@@ -1,6 +1,8 @@
 package servlets;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 import pojo.Task;
 import service.TaskService;
 
@@ -12,12 +14,21 @@ import java.io.IOException;
 
 public class TaskServlet extends HttpServlet {
     Logger logger = Logger.getLogger(TaskServlet.class);
-    TaskService taskService = new TaskService();
+
+    @Autowired
+    private TaskService taskService;
+
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this, getServletContext());
+    }
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String taskId = req.getParameter("taskId");
 
-        logger.debug(String.format("Запрошена задача № %s", taskId));
+        this.logger.debug(String.format("Запрошена задача № %s", taskId));
         int id = Integer.parseInt(taskId);
         Task task = taskService.getTask(id);
         req.setAttribute("task", task);
