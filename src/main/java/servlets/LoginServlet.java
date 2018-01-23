@@ -3,6 +3,7 @@ package servlets;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
+import pojo.User;
 import service.LoginService;
 
 import javax.servlet.ServletException;
@@ -39,7 +40,8 @@ public class LoginServlet extends HttpServlet {
         String login = req.getParameter("login");
         String userPassword = req.getParameter("password");
         if (this.loginService.checkUser(login, userPassword)) {
-            req.getSession().setAttribute("login", login);
+            User user = loginService.getUser(login);
+            req.getSession().setAttribute("login", user);
             resp.sendRedirect("/inner/dashboard");
             logger.trace(req.getSession().getId().toString() + " access success, redirect /inner/dashboard");
         } else {
