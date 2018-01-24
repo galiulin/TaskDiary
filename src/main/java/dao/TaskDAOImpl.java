@@ -2,6 +2,7 @@ package dao;
 
 import connection.*;
 import pojo.Condition;
+import pojo.Role;
 import pojo.Task;
 
 import java.sql.*;
@@ -23,7 +24,7 @@ public class TaskDAOImpl implements TaskDAO {
         List<Task> result = connectionDB.getFromDB(connection -> {
             List<Task> list = new ArrayList<>();
             PreparedStatement statement = connection.prepareStatement(
-                    "SELECT id, condition, description, date_add, dead_line, user_id FROM task;");
+                    "SELECT id, condition, description, date_add, dead_line, user_id, title FROM task;");
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 list.add(constructingTaskFromField(resultSet));
@@ -43,7 +44,8 @@ public class TaskDAOImpl implements TaskDAO {
         Timestamp dateAdd = Timestamp.valueOf(resultSet.getString("date_add"));
         Timestamp deadLine = Timestamp.valueOf(resultSet.getString("dead_line"));
         int userId = resultSet.getInt("user_id");
-        Task task = new Task(id, condition, description, dateAdd, deadLine, userId);
+        String title = resultSet.getString("title");
+        Task task = new Task(id, condition, title, description, dateAdd, deadLine, userId);
         return task;
     }
 
@@ -55,8 +57,14 @@ public class TaskDAOImpl implements TaskDAO {
         connectionDB.getFromDB(connection -> {
             PreparedStatement statement = connection.prepareStatement(
                     "INSERT INTO task " +
-                            "(condition, description, date_add, dead_line, user_id) VALUES " +
-                            "(?, ?, ?, ?, ?) RETURNING id ");
+                            "(condition, description, date_add, dead_line, user_id, title) VALUES " +
+                            "(?, ?, ?, ?, ?, ?) RETURNING id ");
+            statement.setString(1, task.getCondition().name());
+            statement.setString(2, task.getDescription());
+            statement.setTimestamp(3, task.getDateAdd());
+            statement.setTimestamp(4, task.getDeadLine());
+            statement.setInt(5, task.getUserId());
+            statement.setString(6, task.getTitle());
             ResultSet set = statement.executeQuery();
             while (set.next()) {
                 task.setId(set.getInt("id"));
@@ -66,7 +74,7 @@ public class TaskDAOImpl implements TaskDAO {
     }
 
     /**
-     *  меняет статус задачи
+     * меняет статус задачи
      */
     @Override
     public void updateCondition(Task task, Condition condition) throws SQLException {
@@ -82,20 +90,36 @@ public class TaskDAOImpl implements TaskDAO {
 
     /**
      * получение задачи по ее id
-     * */
+     */
     @Override
     public Task getTaskById(int id) throws SQLException {
         return connectionDB.getFromDB(connection -> {
             PreparedStatement statement = connection.prepareStatement(
-                    "SELECT id, condition, description, date_add, dead_line, user_id FROM task WHERE task.id = ?"
+                    "SELECT id, condition, description, date_add, dead_line, user_id, title FROM task WHERE task.id = ?"
             );
             statement.setInt(1, id);
             ResultSet set = statement.executeQuery();
             Task task = null;
-            while (set.next()){
+            if (set.next()) {
                 task = constructingTaskFromField(set);
             }
             return task;
+        });
+    }
+
+    @Override
+    public List<Task> getTaskByCondition(Condition condition) throws SQLException {
+        return connectionDB.getFromDB(connection -> {
+            List<Task> result = new ArrayList<>();
+            PreparedStatement statement = connection.prepareStatement(
+                    "SELECT id, condition, description, date_add, dead_line, user_id, title FROM task WHERE task.condition = ?"
+            );
+            statement.setString(1, condition.name());
+            ResultSet set = statement.executeQuery();
+            while (set.next()){
+                result.add(constructingTaskFromField(set));
+            }
+            return result;
         });
     }
 }

@@ -31,21 +31,26 @@ public class Task {
     @XmlElement(name = "user_id")
     private int userId;
 
-    public Task(Condition condition, String description, Timestamp dateAdd, Timestamp deadLine, int userId) {
+    @XmlElement(name = "title")
+    private String title;
+
+    public Task(Condition condition, String title, String description, Timestamp dateAdd, Timestamp deadLine, int userId) {
         this.condition = condition;
         this.description = description;
         this.dateAdd = dateAdd;
         this.deadLine = deadLine;
         this.userId = userId;
+        this.title = title;
     }
 
-    public Task(int id, Condition condition, String description, Timestamp dateAdd, Timestamp deadLine, int userId) {
+    public Task(int id, Condition condition, String title, String description, Timestamp dateAdd, Timestamp deadLine, int userId) {
         this.id = id;
         this.condition = condition;
         this.description = description;
         this.dateAdd = dateAdd;
         this.deadLine = deadLine;
         this.userId = userId;
+        this.title = title;
     }
 
     public Task(){}
@@ -101,6 +106,14 @@ public class Task {
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     @Override
