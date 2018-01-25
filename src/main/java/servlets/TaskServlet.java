@@ -32,7 +32,7 @@ public class TaskServlet extends HttpServlet {
         int id = Integer.parseInt(taskId);
         Task task = taskService.getTask(id);
         req.setAttribute("task", task);
-        req.getRequestDispatcher("/task.jsp").forward(req, resp);
+        req.getRequestDispatcher("/pages/task.jsp").forward(req, resp);
     }
 
     @Override

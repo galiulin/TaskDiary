@@ -32,7 +32,7 @@ public class DashboardServlet extends HttpServlet {
         User user = (User) req.getSession().getAttribute("login");
         List<Task> allTask = this.dashboardService.getTasks(user);
         req.setAttribute("tasks", allTask);
-        req.getRequestDispatcher("/dashboard.jsp").forward(req, resp);
+        req.getRequestDispatcher("/pages/dashboard.jsp").forward(req, resp);
     }
 
     @Override
