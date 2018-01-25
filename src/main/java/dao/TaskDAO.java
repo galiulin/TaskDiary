@@ -12,19 +12,19 @@ public interface TaskDAO {
     /**
      * получение всех задач
      */
-    List<Task> getAllTasks() throws SQLException;
+    List<Task> getAllTasks() throws DAOException;
 
-    void addTask(Task task) throws SQLException;
+    void addTask(Task task) throws DAOException;
 
-    void updateCondition(Task task, Condition condition) throws SQLException;
+    void updateCondition(Task task, Condition condition) throws DAOException;
 
     /**
      * получение задачи по id
      * */
-    Task getTaskById(int id) throws SQLException;
+    Task getTaskById(int id) throws DAOException;
 
     /**
      * получение задач по состояниям
      * */
-    List<Task> getTaskByCondition(Condition condition) throws SQLException;
+    List<Task> getTaskByCondition(Condition condition) throws DAOException;
 }
