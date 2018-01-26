@@ -54,8 +54,13 @@ create table task
   description text,
   date_add timestamp not null,
   dead_line timestamp not null,
-  user_id integer
+  user_id integer,
+  title varchar(100)
 )
+;
+
+create unique index task_id_uindex
+  on task (id)
 ;
 
 create unique index task_id_uindex
@@ -96,21 +101,22 @@ INSERT INTO user_t (login, first_name, last_name, password, role) VALUES
 ('test_admin_1', 'test_a_name_1', 'test_a_last_name_1', 'admin', 'ADMIN'),
 ('test_admin_2', 'test_a_name_2', 'test_a_last_name_2', 'admin', 'ADMIN'),
 ('test_worker_1', 'test_w_name_1', 'test_w_last_name_1', 'worker', 'WORKER'),
-('test_worker_2', 'test_w_name_2', 'test_w_last_name_2', 'worker', 'WORKER');
+('test_worker_2', 'test_w_name_2', 'test_w_last_name_2', 'worker', 'WORKER'),
+('admin', 'admin', 'admin', 'admin', 'ADMIN'),
+('worker', 'worker', 'worker', 'worker', 'WORKER'),
+('manager', 'manager', 'manager', 'manager', 'MANAGER');
 
 INSERT INTO user_t (login, first_name, last_name, password, role) VALUES
   ('testreturningint', 'noname', 'nolaste', 'pass','WORKER') RETURNING id;
 
-SELECT * FROM user_t;
 
-INSERT INTO task (condition, description, date_add, dead_line, user_id) VALUES
-('VERIFICATION', 'its a test task', '2018-01-14 17:33:40', '2018-01-29 18:33:00', '4'),
-('DONE', 'its a test task', '2018-01-14 17:33:40', '2018-01-29 18:33:00', '4'),
-('VERIFICATION', 'its a test task', '2018-01-14 17:33:40', '2018-01-29 18:33:00', '8'),
-('IN_PROCESS', 'its a test task', '2018-01-14 17:33:40', '2018-01-29 18:33:00', '8'),
-('VERIFICATION', 'its a test task', '2018-01-14 17:33:40', '2018-01-29 18:33:00', '4');
+INSERT INTO task (condition, title, description, date_add, dead_line, user_id) VALUES
+('VERIFICATION', 'first', 'its a test task', '2018-01-14 17:33:40', '2018-01-29 18:33:00', '4'),
+('DONE','second', 'its a test task', '2018-01-14 17:33:40', '2018-01-29 18:33:00', '4'),
+('VERIFICATION','third', 'its a test task', '2018-01-14 17:33:40', '2018-01-29 18:33:00', '8'),
+('IN_PROCESS','someTitles', 'its a test task', '2018-01-14 17:33:40', '2018-01-29 18:33:00', '8'),
+('VERIFICATION','else', 'its a test task', '2018-01-14 17:33:40', '2018-01-29 18:33:00', '4');
 
-SELECT * FROM task;
 
 
 DELETE FROM task WHERE user_id NOT IN (SELECT id FROM user_t);

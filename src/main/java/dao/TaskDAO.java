@@ -11,6 +11,10 @@ public interface TaskDAO {
 
     /**
      * получение всех задач
+     *
+     * @return ArrayList со списком всех задач
+     * <p>
+     * пустой лист если задач нет
      */
     List<Task> getAllTasks() throws DAOException;
 
@@ -20,11 +24,11 @@ public interface TaskDAO {
 
     /**
      * получение задачи по id
-     * */
+     */
     Task getTaskById(int id) throws DAOException;
 
     /**
      * получение задач по состояниям
-     * */
+     */
     List<Task> getTaskByCondition(Condition condition) throws DAOException;
 }

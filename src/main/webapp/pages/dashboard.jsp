@@ -6,11 +6,11 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 </head>
 <body>
-<c:forEach items="${requestScope.tasks}" var="task">
+<c:forEach var="task" items="${tasks}">
     <c:out value="${task.title}"></c:out>
     <c:out value="${task.dateAdd}"></c:out>
     <c:out value="${task.condition}"></c:out>
-    <a href="/inner/task?taskId=${task.id}"><button>VIEW</button></a>
+    <a href="/task?taskId=${task.id}"><button>VIEW</button></a>
     <br>
 </c:forEach>
 </body>

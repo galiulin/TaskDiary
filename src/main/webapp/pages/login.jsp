@@ -19,7 +19,7 @@
     <input type="submit" value="ok"/>
 </form>
 <p>
-    <%=request.getParameter("access") != null ? request.getParameter("access") : "" %>
+    <%=request.getAttribute("access") != null ? request.getAttribute("access") : "" %>
 </p>
 </body>
 </html>

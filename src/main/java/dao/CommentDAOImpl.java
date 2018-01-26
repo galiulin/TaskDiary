@@ -2,6 +2,7 @@ package dao;
 
 import connection.ConnectionDB;
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Component;
 import pojo.Comment;
 import pojo.Task;
 import pojo.User;
@@ -10,6 +11,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class CommentDAOImpl implements CommentDAO {
     Logger logger = Logger.getLogger(CommentDAOImpl.class);
     ConnectionDB connectionDB;

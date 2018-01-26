@@ -3,6 +3,7 @@ package xml;
 import connection.ConnectionDBImpl;
 import dao.*;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import pojo.Comment;
 import pojo.Task;
 import pojo.User;
@@ -18,6 +19,9 @@ public class JaxbMarshall {
 
     private static Logger logger = Logger.getLogger(JaxbMarshall.class);
 
+    @Autowired
+    static UserDAO userDAO;
+
     /**
      * сохраняем User в XML файл
      *
@@ -29,7 +33,6 @@ public class JaxbMarshall {
             Marshaller marshaller = context.createMarshaller();
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
 
-            UserDAOImpl userDAO = new UserDAOImpl(ConnectionDBImpl.getInstance());
             List<User> users = userDAO.getAllUsers();
 
             XmlUsers xmlUsers = new XmlUsers();
@@ -42,6 +45,9 @@ public class JaxbMarshall {
         }
     }
 
+    @Autowired
+    static TaskDAO taskDAO;
+
     /**
      * сохраняем задачи в xml
      * */
@@ -51,7 +57,7 @@ public class JaxbMarshall {
             Marshaller marshaller = context.createMarshaller();
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
 
-            TaskDAO taskDAO = new TaskDAOImpl(ConnectionDBImpl.getInstance());
+//            TaskDAO taskDAO = new TaskDAOImpl(ConnectionDBImpl.getInstance());
             List<Task> tasks = taskDAO.getAllTasks();
 
             XmlTask xmlTasks = new XmlTask();

@@ -4,6 +4,7 @@ import connection.ConnectionDBImpl;
 import dao.TaskDAO;
 import dao.TaskDAOImpl;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pojo.Task;
 
@@ -14,7 +15,8 @@ public class TaskService {
 
     Logger logger = Logger.getLogger(TaskService.class);
 
-    TaskDAO taskDAO = new TaskDAOImpl(ConnectionDBImpl.getInstance());
+    @Autowired
+    TaskDAO taskDAO;
 
     public Task getTask(int id){
         Task task = null;

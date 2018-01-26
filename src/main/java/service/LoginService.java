@@ -1,9 +1,8 @@
 package service;
 
-import connection.ConnectionDBImpl;
 import dao.UserDAO;
-import dao.UserDAOImpl;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pojo.User;
 
@@ -13,7 +12,9 @@ import java.sql.SQLException;
 public class LoginService {
 
     private static Logger logger = Logger.getLogger(LoginService.class);
-    private UserDAO userDAO = new UserDAOImpl(ConnectionDBImpl.getInstance());
+
+    @Autowired
+    private UserDAO userDAO;
 
     /**
      * Проверяет пользователя на наличие в базе данных и сверяет пароль

@@ -1,6 +1,8 @@
 package dao;
 
 import connection.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import pojo.Condition;
 import pojo.Role;
 import pojo.Task;
@@ -9,15 +11,18 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class TaskDAOImpl implements TaskDAO {
-    private ConnectionDB connectionDB;
 
-    public TaskDAOImpl(ConnectionDB connectionDB) {
-        this.connectionDB = connectionDB;
-    }
+    @Autowired
+    private ConnectionDB connectionDB;
 
     /**
      * получение списка всех задач
+     *
+     * @return ArrayList со списком задач,
+     * <p>
+     * пустой ArrayList если задач нет
      */
     @Override
     public List<Task> getAllTasks() throws DAOException {

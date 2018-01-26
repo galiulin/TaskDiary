@@ -1,6 +1,8 @@
 package dao;
 
 import connection.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import pojo.Role;
 import pojo.User;
 
@@ -8,13 +10,12 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class UserDAOImpl implements UserDAO {
 
+    @Autowired
     private ConnectionDB conDB;
 
-    public UserDAOImpl(ConnectionDB connectionDB) {
-        this.conDB = connectionDB;
-    }
 
     /**
      * получение пользователя по логину
