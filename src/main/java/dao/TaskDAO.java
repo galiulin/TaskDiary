@@ -31,4 +31,12 @@ public interface TaskDAO {
      * получение задач по состояниям
      */
     List<Task> getTaskByCondition(Condition condition) throws DAOException;
+
+    /**
+     * редактирование имеющейся задачи
+     * <p>
+     *
+     * FIXME:на текущий момент не редактируется дата окончания выполнения задачи
+     */
+    Task editTask(Task task) throws DAOException;
 }

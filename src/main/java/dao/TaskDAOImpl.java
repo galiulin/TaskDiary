@@ -151,4 +151,33 @@ public class TaskDAOImpl implements TaskDAO {
             throw new DAOException("addTask()", ex);
         }
     }
+
+    @Override
+    public Task editTask(Task task) throws DAOException {
+        try {
+            return connectionDB.getFromDB(connection -> {
+                PreparedStatement statement = connection.prepareStatement(
+                        "UPDATE task SET " +
+                                "condition=?, " +
+                                "description=?, " +
+                                "user_id=?, " +
+                                "title=? " +
+                                "WHERE id=? RETURNING date_add, dead_line"
+                );
+                statement.setString(1, task.getCondition().name());
+                statement.setString(2, task.getDescription());
+                statement.setInt(3, task.getUserId());
+                statement.setString(4, task.getTitle());
+                statement.setInt(5, task.getId());
+                ResultSet resultSet = statement.executeQuery();
+                if (resultSet.next()) {
+                    task.setDateAdd(resultSet.getTimestamp("date_add"));
+                    task.setDeadLine(resultSet.getTimestamp("dead_line"));
+                }
+                return task;
+            });
+        } catch (SQLException ex) {
+            throw new DAOException("exception in editTask", ex);
+        }
+    }
 }
