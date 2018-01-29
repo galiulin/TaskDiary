@@ -2,15 +2,10 @@
 <html>
 <head>
     <title>login</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 </head>
 <body>
-<%--<%= request.getAttribute("message")%>--%>
-<%--<%--%>
-<%--long cuurentTime = System.currentTimeMillis();--%>
-<%--String timeMessage = "CurrentTime = " + cuurentTime;--%>
-<%--%>--%>
-<%--<%= timeMessage%>--%>
+
 <form action="${pageContext.request.contextPath}/login" method="post">
     <input type="text" value="login" name="login"/>
     <br/>
@@ -18,8 +13,11 @@
     <br/>
     <input type="submit" value="ok"/>
 </form>
+
 <p>
-    <%=request.getAttribute("access") != null ? request.getAttribute("access") : "" %>
+    <font color="red">
+        <%=request.getParameter("access") != null ? request.getParameter("access") : "" %>
+    </font>
 </p>
 </body>
 </html>
