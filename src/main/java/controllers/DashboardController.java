@@ -26,7 +26,7 @@ public class DashboardController {
     public String showDashboardPage(Model model) {
         String result = "redirect:/plug";
         logger.debug("запрошена страница dashboard");
-        User user = new User("admin", "admin", "admin", "admin", Role.ADMIN);
+        User user = new User("admin", "admin", "admin", "admin", Role.ROLE_ADMIN);
         List<Task> allTask = null;
         try {
             allTask = this.dashboardService.getTasks(user);

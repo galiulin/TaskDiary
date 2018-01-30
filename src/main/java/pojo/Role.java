@@ -1,7 +1,7 @@
 package pojo;
 
 public enum Role {
-    MANAGER,
-    WORKER,
-    ADMIN;
+    ROLE_MANAGER,
+    ROLE_WORKER,
+    ROLE_ADMIN;
 }

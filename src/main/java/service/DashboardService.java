@@ -44,11 +44,11 @@ public class DashboardService {
         }
 
         List<Task> result = null;
-            if (user.getRole() == Role.WORKER) {
+            if (user.getRole() == Role.ROLE_WORKER) {
                 result = tasksWorker(user);
-            } else if (user.getRole() == Role.MANAGER) {
+            } else if (user.getRole() == Role.ROLE_MANAGER) {
                 result = taskManager();
-            } else if (user.getRole() == Role.ADMIN) {
+            } else if (user.getRole() == Role.ROLE_ADMIN) {
                 result = tasksAdmin();
             }
         return result;

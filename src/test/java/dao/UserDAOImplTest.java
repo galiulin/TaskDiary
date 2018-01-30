@@ -27,7 +27,7 @@ class UserDAOImplTest {
 
     @BeforeEach
     void setup1(){
-        userDAO = new UserDAOImpl(ConnectionDBImpl.getInstance());
+        userDAO = new UserDAOImpl();
     }
 
     /**
@@ -45,7 +45,7 @@ class UserDAOImplTest {
     @Test
     void insertNewUserWorker() throws SQLException {
         String login = "testMethodWorker";
-        User user = new User(login, "firstNameTestMethod", "lastNameTestMethod", "testPass", Role.WORKER);
+        User user = new User(login, "firstNameTestMethod", "lastNameTestMethod", "testPass", Role.ROLE_WORKER);
         int count = userDAO.insertNewUser(user);
         User userFromDB = userDAO.getUserByLogin(login);
         assertEquals(user, userFromDB);
@@ -58,7 +58,7 @@ class UserDAOImplTest {
     @Test
     void insertNewUserAdmin() throws SQLException {
         String login = "testMethodAdmin";
-        User user = new User(login, "firstNameTestMethod", "lastNameTestMethod", "testPass", Role.ADMIN);
+        User user = new User(login, "firstNameTestMethod", "lastNameTestMethod", "testPass", Role.ROLE_ADMIN);
         int count = userDAO.insertNewUser(user);
         User userFromDB = userDAO.getUserByLogin(login);
         assertEquals(user, userFromDB);
@@ -71,7 +71,7 @@ class UserDAOImplTest {
     @Test
     void insertNewUserManager() throws SQLException {
         String login = "testMethodManager";
-        User user = new User(login, "firstNameTestMethod", "lastNameTestMethod", "testPass", Role.MANAGER);
+        User user = new User(login, "firstNameTestMethod", "lastNameTestMethod", "testPass", Role.ROLE_MANAGER);
         int count = userDAO.insertNewUser(user);
         User userFromDB = userDAO.getUserByLogin(login);
         assertEquals(user, userFromDB);
@@ -84,7 +84,7 @@ class UserDAOImplTest {
     @Test
     void updateUserFields() throws SQLException {
         String login = "updateUserField";
-        User user = new User(login, "beforeUpdateFirstName", "beforeUpdateLastName", "updatePass", Role.WORKER);
+        User user = new User(login, "beforeUpdateFirstName", "beforeUpdateLastName", "updatePass", Role.ROLE_WORKER);
         userDAO.insertNewUser(user);
         User user1 = userDAO.getUserByLogin(login);
         assertEquals(user, user1);
@@ -114,7 +114,7 @@ class UserDAOImplTest {
      * */
     @Test
     void testDeleteUser() throws SQLException {
-              User user =  new User("someLoginBeforeDelete","firstName", "lastNmee", "pass", Role.WORKER);
+              User user =  new User("someLoginBeforeDelete","firstName", "lastNmee", "pass", Role.ROLE_WORKER);
         userDAO.insertNewUser(user);
         deleteUser(user);
 
@@ -145,7 +145,7 @@ class UserDAOImplTest {
     @Test
     void testUpdateUserPassword() throws SQLException {
         String login = "updatePass";
-        User user = new User(login, "First_name", "last_name", "before update", Role.WORKER);
+        User user = new User(login, "First_name", "last_name", "before update", Role.ROLE_WORKER);
         deleteUser(user);
         userDAO.insertNewUser(user);
         String newPass = "after update";
