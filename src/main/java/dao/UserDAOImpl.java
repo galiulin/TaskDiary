@@ -18,7 +18,7 @@ public class UserDAOImpl implements UserDAO {
 
 
     /**
-     * получение пользователя по логину
+     * получение {@link User} по логину
      */
     @Override
     public User getUserByLogin(String login) throws DAOException {
@@ -40,7 +40,7 @@ public class UserDAOImpl implements UserDAO {
     }
 
     /**
-     * получение всех User из базы данных
+     * получение всех {@link User} из базы данных
      */
     @Override
     public List<User> getAllUsers() throws DAOException {

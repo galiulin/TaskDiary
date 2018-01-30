@@ -12,6 +12,8 @@
     <http auto-config="true">
         <intercept-url pattern="/" access="permitAll()"/>
         <intercept-url pattern="/inner/**" access="isAuthenticated()"/>
+        <intercept-url pattern="/dashboard" access="isAuthenticated()"/>
+
 
         <form-login login-page="/login"
                     username-parameter="username"

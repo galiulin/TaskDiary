@@ -16,6 +16,7 @@ public class User {
     private String firstName;
     private String lastName;
     private String password;
+    private String confirmPassword;
     private Role role;
 
     public User() {
@@ -95,6 +96,14 @@ public class User {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
     }
 
     @Override
