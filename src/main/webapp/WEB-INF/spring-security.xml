@@ -11,15 +11,14 @@
 
     <http auto-config="true">
         <intercept-url pattern="/" access="permitAll()"/>
-        <!--<intercept-url pattern="/showTime**" access="hasRole('ADMIN')"/>-->
         <intercept-url pattern="/inner/**" access="isAuthenticated()"/>
 
         <form-login login-page="/login"
                     username-parameter="username"
                     password-parameter="userpass"
-                    default-target-url="/index"
+                    default-target-url="/dashboard"
                     always-use-default-target="true"
-                    authentication-failure-url="/login?error=fuck you"/>
+                    authentication-failure-url="/login?error=error"/>
         <csrf disabled="true"/>
     </http>
 
@@ -27,13 +26,8 @@
     <beans:bean id="myCustomAuthProvider" class="configs.CustomAuthProvider"/>
     <authentication-manager>
         <authentication-provider ref="myCustomAuthProvider">
-            <!--<password-encoder ref="encoder"/>-->
-            <!--<jdbc-user-service data-source-ref="dataSourse"-->
-            <!--users-by-username-query="SELECT login AS username, password, enabled FROM user_data WHERE login = ?"-->
-            <!--authorities-by-username-query="SELECT login AS username, role FROM user_data WHERE login = ?"></jdbc-user-service>-->
         </authentication-provider>
     </authentication-manager>
     <beans:bean id="encoder" class="utils.MyPasswordEncoder"/>
-    <!--<context:component-scan base-package="configs"/>-->
 
 </beans:beans>

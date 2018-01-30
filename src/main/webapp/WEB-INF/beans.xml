@@ -2,11 +2,13 @@
         xmlns="http://www.springframework.org/schema/beans"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xmlns:beans="http://www.springframework.org/schema/context"
+        xmlns:context="http://www.springframework.org/schema/context"
         xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans-4.3.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
-    <beans:annotation-config></beans:annotation-config>
-    <beans:component-scan base-package="service"></beans:component-scan>
-    <beans:component-scan base-package="dao"></beans:component-scan>
+    <beans:annotation-config/>
+    <beans:component-scan base-package="service"/>
+    <beans:component-scan base-package="dao"/>
     <!--<bean id="Dashboard" class="service.DashboardService"/>-->
+    <context:property-placeholder location="classpath*:database.properties"/>
     <bean id="ConnectionDB" class="connection.ConnectionDBImpl"/>
 </beans>
