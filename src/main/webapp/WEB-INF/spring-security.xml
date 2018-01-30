@@ -6,26 +6,34 @@
              xsi:schemaLocation="http://www.springframework.org/schema/security
     http://www.springframework.org/schema/security/spring-security-4.2.xsd
     http://www.springframework.org/schema/beans
-    http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
-    http://www.springframework.org/schema/context
-    http://www.springframework.org/schema/context/spring-context.xsd">
+    http://www.springframework.org/schema/beans/spring-beans-4.2.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+    <global-method-security secured-annotations="enabled"/>
 
-    <!--<http auto-config="true">-->
-    <http>
-        <csrf disabled="true"/><!--TODO включить CSRF-->
-        <form-login login-page='/login' default-target-url="/login"
-                    authentication-failure-url="/login?access=access_denied"/>
-        <intercept-url pattern='/login' access="isAnonymous()"/>
-        <!--<form-login login-page="pages/login.jsp" default-target-url="/login" authentication-failure-url="/login?access=access_denied"/>-->
-        <intercept-url pattern="/**" access="isAuthenticated()"/>
+    <http auto-config="true">
+        <intercept-url pattern="/" access="permitAll()"/>
+        <!--<intercept-url pattern="/showTime**" access="hasRole('ADMIN')"/>-->
+        <intercept-url pattern="/inner/**" access="isAuthenticated()"/>
+
+        <form-login login-page="/login"
+                    username-parameter="username"
+                    password-parameter="userpass"
+                    default-target-url="/index"
+                    always-use-default-target="true"
+                    authentication-failure-url="/login?error=fuck you"/>
+        <csrf disabled="true"/>
     </http>
 
+    <beans:bean id="myCustomUserService" class="configs.CustomUserService"/>
+    <beans:bean id="myCustomAuthProvider" class="configs.CustomAuthProvider"/>
     <authentication-manager>
-        <authentication-provider>
-            <user-service>
-                <user name="admin" password="admin" authorities="ROLE_USER, ROLE_ADMIN"/>
-            </user-service>
+        <authentication-provider ref="myCustomAuthProvider">
+            <!--<password-encoder ref="encoder"/>-->
+            <!--<jdbc-user-service data-source-ref="dataSourse"-->
+            <!--users-by-username-query="SELECT login AS username, password, enabled FROM user_data WHERE login = ?"-->
+            <!--authorities-by-username-query="SELECT login AS username, role FROM user_data WHERE login = ?"></jdbc-user-service>-->
         </authentication-provider>
     </authentication-manager>
+    <beans:bean id="encoder" class="utils.MyPasswordEncoder"/>
+    <!--<context:component-scan base-package="configs"/>-->
 
 </beans:beans>

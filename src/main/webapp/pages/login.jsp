@@ -2,22 +2,15 @@
 <html>
 <head>
     <title>login</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 </head>
 <body>
-
-<form action="${pageContext.request.contextPath}/login" method="post">
-    <input type="text" value="login" name="login"/>
-    <br/>
-    <input type="text" value="password" name="password"/>
-    <br/>
-    <input type="submit" value="ok"/>
+<form name="f" action="/login" method="post">
+    <input type="text" value="vik" name="username"/>
+    <input type="text" value="pass" name="userpass"/>
+    <input type="submit" value="submit"/>
 </form>
-
 <p>
-    <font color="red">
-        <%=request.getParameter("access") != null ? request.getParameter("access") : "" %>
-    </font>
+    <%=request.getParameter("error")!=null ? request.getParameter("error"):"" %>
 </p>
 </body>
 </html>
