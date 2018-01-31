@@ -1,6 +1,8 @@
 package configs;
 
+import common.Logged;
 import dao.UserDAO;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,6 +19,9 @@ import java.util.*;
 @Component
 public class CustomAuthProvider implements AuthenticationProvider {
 
+    @Logged
+    Logger logger;
+
     @Autowired
     UserDAO userDao;
 
@@ -28,13 +33,15 @@ public class CustomAuthProvider implements AuthenticationProvider {
         String login = authentication.getName();
         String password = authentication.getCredentials().toString();
         try {
-            ArrayList list = new ArrayList();
             User user = userDao.getUserByLogin(login);
-            String pass = user == null ? null : user.getPassword();
-//            String pass = userDao.getUserByLogin(login).getPassword();
-            list.add(new SimpleGrantedAuthority("role_user"));
-            if (myPasswordEncoder.matches(password, pass)) {
-                return new UsernamePasswordAuthenticationToken(login, pass, list);
+            if (user != null) {
+                ArrayList list = new ArrayList();
+                String pass = user == null ? null : user.getPassword();
+                /*TODO Добавление всех ролей*/
+                list.add(new SimpleGrantedAuthority(user.getRole().name()));
+                if (myPasswordEncoder.matches(password, pass)) {
+                    return new UsernamePasswordAuthenticationToken(login, pass, list);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();

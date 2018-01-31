@@ -1,7 +1,5 @@
 package service;
 
-import connection.ConnectionDB;
-import connection.ConnectionDBImpl;
 import dao.UserDAO;
 import dao.UserDAOImpl;
 import org.apache.log4j.Logger;
@@ -12,7 +10,6 @@ import pojo.User;
 import java.lang.reflect.Field;
 import java.sql.SQLException;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class LoginServiceTest {
@@ -23,10 +20,10 @@ class LoginServiceTest {
     @BeforeAll
     static void setUp() {
         try {
-            Field field = LoginService.class.getDeclaredField("userDAO");
+            Field field = UserService.class.getDeclaredField("userDAO");
             field.setAccessible(true);
             UserDAO mock = mock(UserDAO.class);
-            field.set(LoginService.class, mock);
+            field.set(UserService.class, mock);
             when(mock.getUserByLogin("admins")).thenReturn(new User(5, "admins", "name", "lastN", "pass", Role.ROLE_ADMIN));
         } catch (NoSuchFieldException e) {
             logger.warn(e.getMessage(), e);
@@ -40,10 +37,10 @@ class LoginServiceTest {
     @AfterAll
     static void tearDown() {
         try {
-            Field field = LoginService.class.getDeclaredField("userDAO");
+            Field field = UserService.class.getDeclaredField("userDAO");
             field.setAccessible(true);
             UserDAO userDAO = new UserDAOImpl();
-            field.set(LoginService.class, userDAO);
+            field.set(UserService.class, userDAO);
         } catch (NoSuchFieldException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {

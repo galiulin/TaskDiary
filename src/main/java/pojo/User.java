@@ -2,6 +2,7 @@ package pojo;
 
 
 import javax.xml.bind.annotation.*;
+import java.beans.Transient;
 import java.util.Objects;
 
 //Определяем корневой элемент
@@ -16,7 +17,8 @@ public class User {
     private String firstName;
     private String lastName;
     private String password;
-    private String confirmPassword;
+
+    transient private String confirmPassword;
     private Role role;
 
     public User() {
@@ -98,6 +100,7 @@ public class User {
         this.role = role;
     }
 
+    @XmlTransient
     public String getConfirmPassword() {
         return confirmPassword;
     }

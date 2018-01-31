@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<!DOCTYPE html>
 <html>
 <head>
     <title>login</title>
@@ -13,7 +14,7 @@
 
         <div class="form-group ${error != null ? 'has-error' : ''}">
             <span>${message}</span>
-            <input name="username" type="text" class="form-control" placeholder="Username"
+            <input name="username" type="text" class="form-control" placeholder="Login"
                    autofocus="true"/>
             <input name="userpass" type="password" class="form-control" placeholder="Password"/>
             <span>${error}</span>

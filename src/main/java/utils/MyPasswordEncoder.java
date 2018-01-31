@@ -1,7 +1,9 @@
 package utils;
 
+import common.Logged;
 import connection.ConnectionDB;
 import connection.ConnectionDBImpl;
+import org.apache.log4j.Logger;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -12,8 +14,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Arrays;
 
 public class MyPasswordEncoder implements PasswordEncoder {
+
+    @Logged
+    Logger logger;
+
     @Override
     public String encode(CharSequence rawPassword) {
 
@@ -40,22 +47,22 @@ public class MyPasswordEncoder implements PasswordEncoder {
 
     public static void main(String[] args) throws SQLException {
         MyPasswordEncoder myPasswordEncoder = new MyPasswordEncoder();
-
+        String login = "sometester";
         String line =(myPasswordEncoder.encode("admin"));
 
         ConnectionDB connectionDB = ConnectionDBImpl.getInstance();
         String res = connectionDB.getFromDB(connection -> {
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO trash (value) VALUES (?)");
-            statement.setString(1, line);
-            statement.execute();
-//            Statement statement = connection.createStatement();
-//            ResultSet set = statement.executeQuery("SELECT value FROM trash WHERE id = 4");
-//            while (set.next()) {
-//               return set.getString("value");
-//            }
+//            PreparedStatement statement = connection.prepareStatement("INSERT INTO trash (value) VALUES (?)");
+//            statement.setString(1, line);
+//            statement.execute();
+            Statement statement = connection.createStatement();
+            ResultSet set = statement.executeQuery("SELECT password FROM user_t WHERE login = 'sometester'");
+            while (set.next()) {
+               return set.getString("password");
+            }
             return null;
         });
         System.out.println(res);
-        System.out.println(myPasswordEncoder.matches("admin", res));
+        System.out.println(myPasswordEncoder.matches("tester", res));
     }
 }
