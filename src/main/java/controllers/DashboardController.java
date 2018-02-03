@@ -1,5 +1,6 @@
 package controllers;
 
+import common.Logged;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,10 +18,11 @@ import java.util.List;
 @Controller
 public class DashboardController {
 
-    Logger logger = Logger.getLogger(this.getClass());
+    @Logged
+    private Logger logger;
 
     @Autowired
-    DashboardService dashboardService;
+    private DashboardService dashboardService;
 
     @RequestMapping(value = "/dashboard", method = RequestMethod.GET)
     public String showDashboardPage(Model model) {

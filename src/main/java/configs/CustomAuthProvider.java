@@ -20,13 +20,13 @@ import java.util.*;
 public class CustomAuthProvider implements AuthenticationProvider {
 
     @Logged
-    Logger logger;
+    private Logger logger;
 
     @Autowired
-    UserDAO userDao;
+    private UserDAO userDao;
 
     @Autowired
-    MyPasswordEncoder myPasswordEncoder;
+    private MyPasswordEncoder myPasswordEncoder;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {

@@ -19,11 +19,10 @@ import java.util.Arrays;
 public class MyPasswordEncoder implements PasswordEncoder {
 
     @Logged
-    Logger logger;
+    private Logger logger;
 
     @Override
     public String encode(CharSequence rawPassword) {
-
         return BCrypt.hashpw(rawPassword.toString(), BCrypt.gensalt(12));
     }
 

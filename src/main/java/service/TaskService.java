@@ -1,5 +1,6 @@
 package service;
 
+import common.Logged;
 import connection.ConnectionDBImpl;
 import dao.DAOException;
 import dao.TaskDAO;
@@ -15,10 +16,11 @@ import java.sql.SQLException;
 @Component
 public class TaskService {
 
-    Logger logger = Logger.getLogger(TaskService.class);
+    @Logged
+    private Logger logger;
 
     @Autowired
-    TaskDAO taskDAO;
+    private TaskDAO taskDAO;
 
     public Task getTask(int id) {
         Task task = null;

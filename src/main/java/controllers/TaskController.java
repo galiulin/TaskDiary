@@ -1,5 +1,6 @@
 package controllers;
 
+import common.Logged;
 import dao.DAOException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +16,11 @@ import service.TaskService;
 @Controller
 public class TaskController {
 
-    Logger logger = Logger.getLogger(this.getClass());
+    @Logged
+    private Logger logger;
 
     @Autowired
-    TaskService taskService;
+    private TaskService taskService;
 
     @RequestMapping(value = "/task", method = RequestMethod.GET)
     public String showTaskPage(@RequestParam(name = "taskId") String taskId, Model model) {

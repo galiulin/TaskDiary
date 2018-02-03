@@ -1,7 +1,9 @@
 package dao;
 
+import common.Logged;
 import connection.ConnectionDB;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pojo.Comment;
 import pojo.Task;
@@ -13,14 +15,12 @@ import java.util.List;
 
 @Component
 public class CommentDAOImpl implements CommentDAO {
-    Logger logger = Logger.getLogger(CommentDAOImpl.class);
-    ConnectionDB connectionDB;
 
-    public CommentDAOImpl(ConnectionDB connectionDB) {
-        this.connectionDB = connectionDB;
+    @Logged
+    private Logger logger;
 
-        logger.trace("init");
-    }
+    @Autowired
+    private ConnectionDB connectionDB;
 
     /**
      * добавление комментария к задаче

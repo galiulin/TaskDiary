@@ -1,5 +1,6 @@
 package service;
 
+import common.Logged;
 import dao.DAOException;
 import dao.UserDAO;
 import org.apache.log4j.Logger;
@@ -13,13 +14,14 @@ import java.sql.SQLException;
 @Component
 public class UserService {
 
-    private static Logger logger = Logger.getLogger(UserService.class);
+    @Logged
+    private Logger logger;
 
     @Autowired
     private UserDAO userDAO;
 
     @Autowired
-    MyPasswordEncoder encoder;
+    private MyPasswordEncoder encoder;
 
     /**
      * Проверяет пользователя на наличие в базе данных и сверяет пароль

@@ -4,7 +4,8 @@ import java.sql.SQLException;
 
 public class DAOException extends SQLException {
 
-    String message;
+    private String message;
+
     public DAOException(String message, SQLException ex) {
         super(ex);
         this.message = message;

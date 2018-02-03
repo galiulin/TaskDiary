@@ -16,7 +16,6 @@ public class UserDAOImpl implements UserDAO {
     @Autowired
     private ConnectionDB conDB;
 
-
     /**
      * получение {@link User} по логину
      */

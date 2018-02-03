@@ -58,7 +58,7 @@ public class ConnectionDBImpl implements ConnectionDB {
         try {
             connection = dataSource.getConnection();
         } catch (SQLException e) {
-            logger.warn(e.getMessage(), e);
+            logger.error(e.getMessage(), e);
         }
         return connection;
     }

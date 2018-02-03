@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 public class Log {
 
-    Object[] objects;
+    private Object[] objects;
 
     public Log(Object... objects) {
         this.objects = objects;

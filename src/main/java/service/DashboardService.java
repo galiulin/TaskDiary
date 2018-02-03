@@ -1,5 +1,6 @@
 package service;
 
+import common.Logged;
 import connection.ConnectionDBImpl;
 import dao.DAOException;
 import dao.TaskDAO;
@@ -22,7 +23,9 @@ public class DashboardService {
 
     @Autowired
     private TaskDAO taskDAO;
-    private Logger logger = Logger.getLogger(this.getClass());
+
+    @Logged
+    private Logger logger;
 
     /**
      * получение списка всех имеющихся задач

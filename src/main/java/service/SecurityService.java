@@ -1,5 +1,6 @@
 package service;
 
+import common.Logged;
 import configs.CustomAuthProvider;
 import configs.CustomUserService;
 import org.apache.log4j.Logger;
@@ -11,7 +12,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class SecurityService {
-    private static final Logger logger = Logger.getLogger(SecurityService.class);
+    @Logged
+    private static Logger logger;
 
     @Autowired
     private CustomAuthProvider customAuthProvider;

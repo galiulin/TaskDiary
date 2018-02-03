@@ -1,5 +1,6 @@
 package xml;
 
+import common.Logged;
 import connection.ConnectionDBImpl;
 import dao.*;
 import org.apache.log4j.Logger;
@@ -17,10 +18,11 @@ import java.util.List;
 
 public class JaxbMarshall {
 
-    private static Logger logger = Logger.getLogger(JaxbMarshall.class);
+    @Logged
+    private static Logger logger;
 
     @Autowired
-    static UserDAO userDAO;
+    private static UserDAO userDAO;
 
     /**
      * сохраняем User в XML файл
@@ -46,7 +48,7 @@ public class JaxbMarshall {
     }
 
     @Autowired
-    static TaskDAO taskDAO;
+    private static TaskDAO taskDAO;
 
     /**
      * сохраняем задачи в xml
@@ -70,6 +72,8 @@ public class JaxbMarshall {
         }
     }
 
+    @Autowired
+    private static CommentDAO commentDAO;
 
     public static void converCommentToXml(String filePath) {
         try {
@@ -77,7 +81,6 @@ public class JaxbMarshall {
             Marshaller marshaller = context.createMarshaller();
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
 
-            CommentDAO commentDAO = new CommentDAOImpl(ConnectionDBImpl.getInstance());
             List<Comment> comments = commentDAO.getAllComments();
 
             XmlComment xmlComment = new XmlComment();

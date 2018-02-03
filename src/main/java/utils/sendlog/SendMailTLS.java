@@ -1,5 +1,6 @@
 package utils.sendlog;
 
+import common.Logged;
 import org.apache.log4j.Logger;
 
 import java.util.Properties;
@@ -9,11 +10,12 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 public class SendMailTLS {
-    private static Logger logger = Logger.getLogger(SendMailTLS.class);
+    @Logged
+    private static Logger logger;
 
-    final static String username = "vecjhrf2@gmail.com";
-    final static String password = "QWEqwe123";
-    static Properties properties = new Properties();
+    private final static String username = "vecjhrf2@gmail.com";
+    private final static String password = "QWEqwe123";
+    private static Properties properties = new Properties();
 
     public static void main(String[] args) {
         properties.put("mail.smtp.starttls.enable", "true");

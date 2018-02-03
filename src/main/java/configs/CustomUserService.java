@@ -19,9 +19,9 @@ import java.util.Set;
 public class CustomUserService implements UserDetailsService {
 
     @Autowired
-    UserDAO userDAO;
+    private UserDAO userDAO;
 
-    public UserInside userInside;
+    private UserInside userInside;
 
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
