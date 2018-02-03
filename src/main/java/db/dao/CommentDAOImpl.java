@@ -1,13 +1,13 @@
-package dao;
+package db.dao;
 
 import common.Logged;
-import connection.ConnectionDB;
+import db.connection.ConnectionDB;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import pojo.Comment;
-import pojo.Task;
-import pojo.User;
+import db.pojo.Comment;
+import db.pojo.Task;
+import db.pojo.User;
 
 import java.sql.*;
 import java.util.ArrayList;

@@ -1,11 +1,10 @@
-package dao;
+package db.dao;
 
-import connection.*;
+import db.connection.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import pojo.Condition;
-import pojo.Role;
-import pojo.Task;
+import db.pojo.Condition;
+import db.pojo.Task;
 
 import java.sql.*;
 import java.util.ArrayList;

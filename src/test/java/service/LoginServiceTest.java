@@ -1,11 +1,11 @@
 package service;
 
-import dao.UserDAO;
-import dao.UserDAOImpl;
+import db.dao.UserDAO;
+import db.dao.UserDAOImpl;
 import org.apache.log4j.Logger;
 import org.junit.jupiter.api.*;
-import pojo.Role;
-import pojo.User;
+import db.pojo.Role;
+import db.pojo.User;
 
 import java.lang.reflect.Field;
 import java.sql.SQLException;

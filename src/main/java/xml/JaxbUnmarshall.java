@@ -1,8 +1,8 @@
 package xml;
 
-import pojo.Comment;
-import pojo.Task;
-import pojo.User;
+import db.pojo.Comment;
+import db.pojo.Task;
+import db.pojo.User;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;

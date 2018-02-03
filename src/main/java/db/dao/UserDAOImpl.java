@@ -1,10 +1,10 @@
-package dao;
+package db.dao;
 
-import connection.*;
+import db.connection.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import pojo.Role;
-import pojo.User;
+import db.pojo.Role;
+import db.pojo.User;
 
 import java.sql.*;
 import java.util.ArrayList;

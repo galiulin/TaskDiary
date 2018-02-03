@@ -1,8 +1,7 @@
-package pojo;
+package db.pojo;
 
 
 import javax.xml.bind.annotation.*;
-import java.beans.Transient;
 import java.util.Objects;
 
 //Определяем корневой элемент

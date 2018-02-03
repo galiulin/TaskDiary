@@ -1,10 +1,9 @@
-package dao;
+package db.dao;
 
-import pojo.Comment;
-import pojo.Task;
-import pojo.User;
+import db.pojo.Comment;
+import db.pojo.Task;
+import db.pojo.User;
 
-import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
 

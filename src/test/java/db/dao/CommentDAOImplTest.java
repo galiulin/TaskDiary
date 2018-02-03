@@ -1,16 +1,10 @@
-package dao;
+package db.dao;
 
-import connection.ConnectionDB;
-import connection.ConnectionDBImpl;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import pojo.Comment;
+import db.connection.ConnectionDBImpl;
+import db.pojo.Comment;
 
 import java.sql.*;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class CommentDAOImplTest {
     private static CommentDAO commentDAO;

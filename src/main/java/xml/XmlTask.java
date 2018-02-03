@@ -1,6 +1,6 @@
 package xml;
 
-import pojo.Task;
+import db.pojo.Task;
 
 import javax.xml.bind.annotation.*;
 import java.util.List;

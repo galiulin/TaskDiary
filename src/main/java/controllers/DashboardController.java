@@ -7,9 +7,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import pojo.Role;
-import pojo.Task;
-import pojo.User;
+import db.pojo.Role;
+import db.pojo.Task;
+import db.pojo.User;
 import service.DashboardService;
 
 import java.sql.SQLException;

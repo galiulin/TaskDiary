@@ -1,12 +1,9 @@
 package xml;
 
-import org.junit.jupiter.api.Test;
-import pojo.Task;
-import pojo.User;
+import db.pojo.Task;
+import db.pojo.User;
 
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class JaxbUnmarshallTest {
 

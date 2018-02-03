@@ -1,20 +1,17 @@
 package utils;
 
 import common.Logged;
-import connection.ConnectionDB;
-import connection.ConnectionDBImpl;
+import db.connection.ConnectionDB;
+import db.connection.ConnectionDBImpl;
 import org.apache.log4j.Logger;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Arrays;
 
 public class MyPasswordEncoder implements PasswordEncoder {
 
@@ -51,7 +48,7 @@ public class MyPasswordEncoder implements PasswordEncoder {
 
         ConnectionDB connectionDB = ConnectionDBImpl.getInstance();
         String res = connectionDB.getFromDB(connection -> {
-//            PreparedStatement statement = connection.prepareStatement("INSERT INTO trash (value) VALUES (?)");
+//            PreparedStatement statement = db.connection.prepareStatement("INSERT INTO trash (value) VALUES (?)");
 //            statement.setString(1, line);
 //            statement.execute();
             Statement statement = connection.createStatement();

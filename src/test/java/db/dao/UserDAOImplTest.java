@@ -1,16 +1,14 @@
-package dao;
+package db.dao;
 
-import connection.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import pojo.Role;
-import pojo.User;
+import db.pojo.Role;
+import db.pojo.User;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;

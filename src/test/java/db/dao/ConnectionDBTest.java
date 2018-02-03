@@ -1,14 +1,11 @@
-package dao;
+package db.dao;
 
-import connection.*;
-import org.junit.jupiter.api.*;
-import pojo.Condition;
-import pojo.Role;
+import db.connection.*;
+import db.pojo.Condition;
+import db.pojo.Role;
 
 import java.lang.reflect.*;
 import java.sql.*;
-import java.util.Arrays;
-import java.util.function.Function;
 
 class ConnectionDBTest {
     private static ConnectionDB oldConnectionDB;

@@ -1,13 +1,12 @@
 package xml;
 
 import common.Logged;
-import connection.ConnectionDBImpl;
-import dao.*;
+import db.dao.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import pojo.Comment;
-import pojo.Task;
-import pojo.User;
+import db.pojo.Comment;
+import db.pojo.Task;
+import db.pojo.User;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;

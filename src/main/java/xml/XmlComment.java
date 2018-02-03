@@ -1,6 +1,6 @@
 package xml;
 
-import pojo.Comment;
+import db.pojo.Comment;
 
 import javax.xml.bind.annotation.*;
 import java.util.List;

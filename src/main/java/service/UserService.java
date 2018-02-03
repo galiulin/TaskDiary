@@ -1,12 +1,12 @@
 package service;
 
 import common.Logged;
-import dao.DAOException;
-import dao.UserDAO;
+import db.dao.DAOException;
+import db.dao.UserDAO;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import pojo.User;
+import db.pojo.User;
 import utils.MyPasswordEncoder;
 
 import java.sql.SQLException;

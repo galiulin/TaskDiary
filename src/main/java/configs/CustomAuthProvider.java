@@ -1,7 +1,7 @@
 package configs;
 
 import common.Logged;
-import dao.UserDAO;
+import db.dao.UserDAO;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -10,7 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
-import pojo.User;
+import db.pojo.User;
 import utils.MyPasswordEncoder;
 
 import java.sql.SQLException;

@@ -1,15 +1,13 @@
 package service;
 
 import common.Logged;
-import connection.ConnectionDBImpl;
-import dao.DAOException;
-import dao.TaskDAO;
-import dao.TaskDAOImpl;
+import db.dao.DAOException;
+import db.dao.TaskDAO;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import pojo.Condition;
-import pojo.Task;
+import db.pojo.Condition;
+import db.pojo.Task;
 
 import java.sql.SQLException;
 

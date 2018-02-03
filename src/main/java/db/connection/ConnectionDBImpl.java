@@ -1,15 +1,10 @@
-package connection;
+package db.connection;
 
-import dao.UserDAO;
-import dao.UserDAOImpl;
 import org.apache.log4j.Logger;
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.apache.tomcat.jdbc.pool.PoolProperties;
-import pojo.User;
 
 import java.sql.*;
-import java.util.List;
-import java.util.function.Function;
 
 public class ConnectionDBImpl implements ConnectionDB {
     private static final ConnectionDB INSTANCE = new ConnectionDBImpl();

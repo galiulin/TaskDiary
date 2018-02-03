@@ -1,4 +1,4 @@
-package pojo;
+package db.pojo;
 
 public enum Role {
     ROLE_MANAGER,
