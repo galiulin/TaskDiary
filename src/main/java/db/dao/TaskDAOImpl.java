@@ -1,6 +1,7 @@
 package db.dao;
 
 import db.connection.*;
+import db.exceptions.DAOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import db.pojo.Condition;
@@ -42,10 +43,9 @@ public class TaskDAOImpl implements TaskDAO {
     }
 
     /**
-     * вспомогательный метод для конструирования объекта Задача из полей ResultSet
+     * вспомогательный метод для конструирования {@link Task} из полей ResultSet
      */
-    private Task constructingTaskFromField(ResultSet resultSet) throws DAOException {
-        try {
+    private Task constructingTaskFromField(ResultSet resultSet) throws SQLException {
             int id = resultSet.getInt("id");
             Condition condition = Condition.valueOf(resultSet.getString("condition"));
             String description = resultSet.getString("description");
@@ -55,9 +55,6 @@ public class TaskDAOImpl implements TaskDAO {
             String title = resultSet.getString("title");
             Task task = new Task(id, condition, title, description, dateAdd, deadLine, userId);
             return task;
-        } catch (SQLException ex) {
-            throw new DAOException("constructingTaskFromField()", ex);
-        }
     }
 
     /**
@@ -177,6 +174,28 @@ public class TaskDAOImpl implements TaskDAO {
             });
         } catch (SQLException ex) {
             throw new DAOException("exception in editTask", ex);
+        }
+    }
+
+    @Override
+    public List<Task> getTaskByUserId(int id) throws DAOException {
+        try {
+            return connectionDB.getFromDB(connection -> {
+                List<Task> result = new ArrayList<>();
+                PreparedStatement statement = connection.prepareStatement(
+                        "SELECT id, condition, description, date_add, dead_line, user_id, title FROM task WHERE task.user_id = ?"
+                );
+                statement.setInt(1, id);
+                ResultSet set = statement.executeQuery();
+                while (set.next()) {
+                    Task task = constructingTaskFromField(set);
+                    result.add(task);
+                }
+                return result;
+
+            });
+        } catch (SQLException ex) {
+            throw new DAOException("не удалось получить задачи пользователя " + ex);
         }
     }
 }

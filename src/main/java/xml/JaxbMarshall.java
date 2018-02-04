@@ -2,6 +2,7 @@ package xml;
 
 import common.Logged;
 import db.dao.*;
+import db.exceptions.DAOException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import db.pojo.Comment;
@@ -40,9 +41,9 @@ public class JaxbMarshall {
             xmlUsers.setUsers(users);
             marshaller.marshal(xmlUsers, new File(filePath));
         } catch (JAXBException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error(e);
+        } catch (DAOException e) {
+            logger.error(e);
         }
     }
 
@@ -51,7 +52,7 @@ public class JaxbMarshall {
 
     /**
      * сохраняем задачи в xml
-     * */
+     */
     public static void converTaskToXml(String filePath) {
         try {
             JAXBContext context = JAXBContext.newInstance(XmlTask.class);
@@ -65,9 +66,9 @@ public class JaxbMarshall {
             xmlTasks.setTasks(tasks);
             marshaller.marshal(xmlTasks, new File(filePath));
         } catch (JAXBException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error(e);
+        } catch (DAOException e) {
+            logger.error(e);
         }
     }
 
@@ -87,7 +88,7 @@ public class JaxbMarshall {
             marshaller.marshal(xmlComment, new File(filePath));
         } catch (JAXBException e) {
             logger.warn(e.getMessage(), e);
-        } catch (SQLException e) {
+        } catch (DAOException e) {
             logger.warn(e.getMessage(), e);
         }
     }

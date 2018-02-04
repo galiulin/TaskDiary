@@ -15,6 +15,7 @@
         <intercept-url pattern="/" access="permitAll()"/>
         <intercept-url pattern="/inner/**" access="isAuthenticated()"/>
         <intercept-url pattern="/dashboard" access="isAuthenticated()"/>
+        <intercept-url pattern="/task" access="isAuthenticated()"/>
 
 
         <form-login login-page="/login"
@@ -23,7 +24,7 @@
                     default-target-url="/dashboard"
                     always-use-default-target="true"
                     authentication-failure-url="/login?error=error"/>
-        <csrf disabled="false"/>
+        <csrf disabled="true"/>
     </http>
 
     <beans:bean id="myCustomUserService" class="configs.CustomUserService"/>

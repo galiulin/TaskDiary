@@ -1,6 +1,7 @@
 package controllers;
 
 import common.Logged;
+import db.exceptions.DAOException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,17 +27,18 @@ public class DashboardController {
 
     @RequestMapping(value = "/dashboard", method = RequestMethod.GET)
     public String showDashboardPage(Model model) {
-        String result = "redirect:/plug";
+        String result;
+
         logger.debug("запрошена страница dashboard");
-        User user = new User("admin", "admin", "admin", "admin", Role.ROLE_ADMIN);
-        List<Task> allTask = null;
         try {
-            allTask = this.dashboardService.getTasks(user);
+            User user = new User("admin", "admin", "admin", "admin", Role.ROLE_ADMIN); //TODO заменить пользователя на реального
+            List<Task> allTask = this.dashboardService.getTasks(user);
             model.addAttribute("tasks", allTask);
             logger.debug(String.format("количество задач для отображения на экране %d", allTask.size()));
             result = "dashboard";
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (DAOException e) {
+            logger.error(e);
+            result = "redirect:/plug";
         }
         return result;
     }

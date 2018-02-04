@@ -1,7 +1,7 @@
 package service;
 
 import common.Logged;
-import db.dao.DAOException;
+import db.exceptions.DAOException;
 import db.dao.UserDAO;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,20 +30,16 @@ public class UserService {
      * <p>
      * false во всех остальных случаях
      */
-    public boolean checkUser(String login, String password) {
+    public boolean checkUser(String login, String password) throws DAOException {
         if (login == null || password == null) {
             logger.debug("Login = " + login + ", password = " + password);
             return false;
         }
         boolean access = false;
-        try {
-            User user = userDAO.getUserByLogin(login);
-            logger.trace("найденный пользователь " + (user == null ? "null" : user));
-            if (user != null && user.getPassword().equals(password)) {
-                access = true;
-            }
-        } catch (SQLException e) {
-            logger.warn(e.getMessage());
+        User user = userDAO.getUserByLogin(login);
+        logger.trace("найденный пользователь " + (user == null ? "null" : user));
+        if (user != null && user.getPassword().equals(password)) {
+            access = true;
         }
         return access;
     }
@@ -59,13 +55,7 @@ public class UserService {
      * null если пользователь отсутствует или не получен
      */
     public User getUser(String login) throws DAOException {
-        User user = null;
-        try {
-            user = userDAO.getUserByLogin(login);
-        } catch (DAOException e) {
-            throw e;
-        }
-        return user;
+        return userDAO.getUserByLogin(login);
     }
 
     public void saveUser(User user) throws DAOException {

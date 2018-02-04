@@ -1,5 +1,7 @@
 package db.connection;
 
+import db.exceptions.DAOException;
+
 import java.sql.SQLException;
 
 @FunctionalInterface

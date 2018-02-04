@@ -1,7 +1,7 @@
 package service;
 
 import common.Logged;
-import db.dao.DAOException;
+import db.exceptions.DAOException;
 import db.dao.TaskDAO;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,14 +20,8 @@ public class TaskService {
     @Autowired
     private TaskDAO taskDAO;
 
-    public Task getTask(int id) {
-        Task task = null;
-        try {
-            task = taskDAO.getTaskById(id);
-        } catch (SQLException e) {
-            logger.warn(e.getMessage(), e);
-        }
-        return task;
+    public Task getTask(int id) throws DAOException {
+        return taskDAO.getTaskById(id);
     }
 
     public Task editTask(int id, String title, String description, int person, Condition condition) throws DAOException {

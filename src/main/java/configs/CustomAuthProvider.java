@@ -2,6 +2,7 @@ package configs;
 
 import common.Logged;
 import db.dao.UserDAO;
+import db.exceptions.DAOException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -43,8 +44,8 @@ public class CustomAuthProvider implements AuthenticationProvider {
                     return new UsernamePasswordAuthenticationToken(login, pass, list);
                 }
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (DAOException e) {
+            logger.error("Ошибка при аутентификации пользователя ", e);
         }
         return null;
     }

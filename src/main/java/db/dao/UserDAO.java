@@ -1,5 +1,6 @@
 package db.dao;
 
+import db.exceptions.DAOException;
 import db.pojo.User;
 
 import java.util.List;

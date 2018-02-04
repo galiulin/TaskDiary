@@ -1,7 +1,7 @@
 package service;
 
 import common.Logged;
-import db.dao.DAOException;
+import db.exceptions.DAOException;
 import db.dao.TaskDAO;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,38 +38,41 @@ public class DashboardService {
     /**
      * получение списка задач в зависимости от уровня доступа пользователя
      */
-    public List<Task> getTasks(User user) throws SQLException {
+    public List<Task> getTasks(User user) throws DAOException {
+        logger.trace("Был запрошен список всех задач");
         if (user.getRole() == null) {
             logger.warn("user Role is null");
             throw new NullPointerException("user Role is null");
         }
 
         List<Task> result = null;
-            if (user.getRole() == Role.ROLE_WORKER) {
+        switch (user.getRole()) {
+            case ROLE_WORKER:
                 result = tasksWorker(user);
-            } else if (user.getRole() == Role.ROLE_MANAGER) {
-                result = taskManager();
-            } else if (user.getRole() == Role.ROLE_ADMIN) {
-                result = tasksAdmin();
-            }
+                break;
+            case ROLE_MANAGER:
+                result = taskManager(user);
+                break;
+            case ROLE_ADMIN:
+                result = tasksAdmin(user);
+                break;
+        }
         return result;
     }
 
     /**
      * получение задач с уровнем доступа администратора
-     * в настоящий момент это все задачи
-     * возращает пустой список если база пустая
+     * в настоящий момент возвращает все доступные задачи.
+     * Возращает пустой список если база пустая
      */
-    private List<Task> tasksAdmin() throws SQLException {
-        List<Task> result = null;
-        result = taskDAO.getAllTasks();
-        return result;
+    private List<Task> tasksAdmin(User user) throws DAOException {
+        return taskDAO.getAllTasks();
     }
 
     /**
      * получение задач с уровнем доступа менеджера
      */
-    private List<Task> taskManager() throws SQLException {
+    private List<Task> taskManager(User user) throws DAOException {
         List<Task> list = new ArrayList<>();
         list.addAll(taskDAO.getTaskByCondition(Condition.VERIFICATION));
         list.addAll(taskDAO.getTaskByCondition(Condition.IN_PROCESS));
@@ -77,12 +80,9 @@ public class DashboardService {
     }
 
     /**
-     * получение задач с уровнем доступа рабочего
+     * получение задач для пользователя с уровнем доступа рабочего
      */
-    private List<Task> tasksWorker(User user) throws SQLException {
-        ArrayList<Task> result = new ArrayList<>();
-        result.addAll(taskDAO.getTaskByCondition(Condition.IN_PROCESS).stream().filter(t ->
-                t.getUserId() == user.getId()).collect(Collectors.toList()));
-        return result;
+    private List<Task> tasksWorker(User user) throws DAOException {
+        return taskDAO.getTaskByUserId(user.getId());
     }
 }

@@ -2,6 +2,7 @@ package db.dao;
 
 import common.Logged;
 import db.connection.ConnectionDB;
+import db.exceptions.DAOException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -47,9 +48,8 @@ public class CommentDAOImpl implements CommentDAO {
      */
     @Override
     public Comment addComment(Comment comment) throws DAOException {
-        Comment result = null;
         try {
-            connectionDB.getFromDB(conn -> {
+            return connectionDB.getFromDB(conn -> {
                 PreparedStatement statement = conn.prepareStatement(
                         "INSERT INTO comment (task_id, user_id, date, comment) VALUES " +
                                 "(?, ?, ?, ?) RETURNING id;"
@@ -69,7 +69,6 @@ public class CommentDAOImpl implements CommentDAO {
         } catch (SQLException ex) {
             throw new DAOException("addComment " + comment, ex);
         }
-        return result;
     }
 
     /**
@@ -77,9 +76,8 @@ public class CommentDAOImpl implements CommentDAO {
      */
     @Override
     public List<Comment> getAllComments() throws DAOException {
-        List<Comment> result = null;
         try {
-            result = connectionDB.getFromDB(conn -> {
+            return connectionDB.getFromDB(conn -> {
                 List<Comment> list = new ArrayList<>();
                 Statement statement = conn.createStatement();
                 ResultSet set = statement.executeQuery("SELECT id, comment, task_id, user_id, date FROM comment");
@@ -92,26 +90,22 @@ public class CommentDAOImpl implements CommentDAO {
         } catch (SQLException ex) {
             throw new DAOException("getAllComments", ex);
         }
-        return result;
     }
 
     /**
      * вспомогательный метод для парсинга ResultSet
      */
-    private Comment parseResSet(ResultSet set) throws DAOException {
-        Comment comment = null;
-        try {
+    private Comment parseResSet(ResultSet set) throws SQLException {
             int id = set.getInt("id");
             String commentStr = set.getString("comment");
             int task_id = set.getInt("task_id");
             int user_id = set.getInt("user_id");
             Timestamp date = set.getTimestamp("date");
-            comment = new Comment(task_id, user_id, date, commentStr);
+
+            Comment comment = new Comment(task_id, user_id, date, commentStr);
             comment.setId(id);
-        } catch (SQLException ex) {
-            throw new DAOException("parseResSet(", ex);
-        }
-        return comment;
+
+            return comment;
     }
 
     /**
@@ -119,9 +113,8 @@ public class CommentDAOImpl implements CommentDAO {
      */
     @Override
     public List<Comment> getCommentByUserId(int userId) throws DAOException {
-        List<Comment> list = null;
         try {
-            list = connectionDB.getFromDB(conn -> {
+            return connectionDB.getFromDB(conn -> {
                 List<Comment> result = new ArrayList<>();
                 PreparedStatement statement = conn.prepareStatement("SELECT id, comment, task_id, user_id, date FROM comment WHERE user_id = ?;");
                 statement.setInt(1, userId);
@@ -135,7 +128,6 @@ public class CommentDAOImpl implements CommentDAO {
         } catch (SQLException ex) {
             throw new DAOException("getCommentByUserId(" + userId, ex);
         }
-        return list;
     }
 
     /**
@@ -143,7 +135,6 @@ public class CommentDAOImpl implements CommentDAO {
      */
     @Override
     public List<Comment> getCommentByTaskId(int taskId) throws DAOException {
-        List<Comment> list = null;
         try {
             return connectionDB.getFromDB(conn -> {
                 List<Comment> result = new ArrayList<>();

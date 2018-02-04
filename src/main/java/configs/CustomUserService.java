@@ -1,6 +1,7 @@
 package configs;
 
 import db.dao.UserDAO;
+import db.exceptions.DAOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -32,7 +33,7 @@ public class CustomUserService implements UserDetailsService {
 
             userInside = new UserInside(userData.getLogin(), userData.getPassword(), grantedAuthoritySet, userData.getId());
 
-        } catch (SQLException e) {
+        } catch (DAOException e) {
             throw new UsernameNotFoundException("пользователь не найден", e);
         }
         return userInside;

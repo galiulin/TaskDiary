@@ -1,5 +1,6 @@
 package db.connection;
 
+import db.exceptions.DAOException;
 import org.apache.log4j.Logger;
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.apache.tomcat.jdbc.pool.PoolProperties;

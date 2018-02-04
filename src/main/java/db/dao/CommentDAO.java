@@ -1,5 +1,6 @@
 package db.dao;
 
+import db.exceptions.DAOException;
 import db.pojo.Comment;
 import db.pojo.Task;
 import db.pojo.User;

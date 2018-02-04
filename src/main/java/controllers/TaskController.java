@@ -1,7 +1,7 @@
 package controllers;
 
 import common.Logged;
-import db.dao.DAOException;
+import db.exceptions.DAOException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,10 +25,18 @@ public class TaskController {
     @RequestMapping(value = "/task", method = RequestMethod.GET)
     public String showTaskPage(@RequestParam(name = "taskId") String taskId, Model model) {
         logger.trace(String.format("Запрошена задача №%s", taskId));
-        int id = Integer.parseInt(taskId);
-        Task task = taskService.getTask(id);
-        logger.trace("Возвращаю задачу = " + task);
-        model.addAttribute("task", task);
+
+        try {
+            int id = Integer.parseInt(taskId);
+            Task task = taskService.getTask(id);
+            model.addAttribute("task", task);
+        } catch (DAOException e) {
+            logger.error(e.getMessage(), e);
+            return "redirect:/plug";
+        } catch (NumberFormatException ex){
+            logger.error("неверный идентификатор задачи", ex);
+            return "redirect:/plug";
+        }
         return "task";
     }
 

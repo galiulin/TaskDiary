@@ -1,6 +1,7 @@
 package db.dao;
 
 import db.connection.*;
+import db.exceptions.DAOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import db.pojo.Role;
@@ -82,7 +83,7 @@ public class UserDAOImpl implements UserDAO {
                 return result;
             });
         } catch (SQLException ex) {
-            throw new DAOException("insertNewUser" + user, ex);
+            throw new DAOException("Не удалось добавить нового пользователя " + user, ex);
         }
     }
 
@@ -99,7 +100,7 @@ public class UserDAOImpl implements UserDAO {
                 return statement.execute();
             });
         } catch (SQLException ex) {
-            throw new DAOException("deleteUser", ex);
+            throw new DAOException("Не удалось удалить пользователя ", ex);
         }
     }
 
@@ -120,7 +121,7 @@ public class UserDAOImpl implements UserDAO {
                 return statement.executeUpdate();
             });
         } catch (SQLException ex) {
-            throw new DAOException("updateUserFields", ex);
+            throw new DAOException("Не удалось обновить данные пользователя ", ex);
         }
     }
 
@@ -139,15 +140,14 @@ public class UserDAOImpl implements UserDAO {
                 return statement.executeUpdate();
             });
         } catch (SQLException ex) {
-            throw new DAOException("updateUserPassword", ex);
+            throw new DAOException("Не удалось обновить пароль пользователя ", ex);
         }
     }
 
     /**
      * вспомогательный метод для конструирования объекта пользователь из полей ResultSet
      */
-    private User constructingUserFromField(ResultSet set) throws DAOException {
-        try {
+    private User constructingUserFromField(ResultSet set) throws SQLException {
             int id = set.getInt("id");
             String loginDB = set.getString("login");
             String first_name = set.getString("first_name");
@@ -160,8 +160,5 @@ public class UserDAOImpl implements UserDAO {
             }
             Role role = Role.valueOf(set.getString("role"));
             return new User(id, loginDB, first_name, last_name, password, role);
-        } catch (SQLException ex) {
-            throw new DAOException("constructingUserFromField()", ex);
-        }
     }
 }
